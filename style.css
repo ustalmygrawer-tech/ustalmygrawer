@@ -1,0 +1,92 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body { 
+    font-family: 'Helvetica Neue', Arial, sans-serif; 
+    background-color: #f6f3f0; 
+    color: #4a3728;
+}
+
+/* --- NAWIGACJA --- */
+.navbar { 
+    position: fixed; top: 0; width: 100%; 
+    background: white; padding: 15px 0; z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+.nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: flex-end; padding: 0 50px; }
+.nav-links a { 
+    text-decoration: none; color: #4a3728; margin-left: 30px; 
+    font-size: 13px; font-weight: 200; /* Bardzo cienka czcionka */
+    letter-spacing: 1px; transition: 0.3s;
+}
+.nav-links a.active, .nav-links a:hover { font-weight: 700; }
+
+/* --- STRONA GŁÓWNA (OBRAZ) --- */
+.home-container {
+    width: 100%;
+    position: relative; /* Pozwala układać przyciski na obrazie */
+    padding-top: 50px; /* Miejsce na navbar */
+}
+.main-bg-image {
+    width: 100%;
+    display: block;
+}
+
+/* --- STREFY KLIKALNE (HOTSPOTY) --- */
+.hotspot {
+    position: absolute;
+    text-decoration: none;
+}
+
+/* Przycisk na samej górze "Sprawdź dostępne ramki" */
+.main-btn-top {
+    top: 23.5%; /* Dopasuj procentowo wysokość */
+    left: 5.7%; /* Dopasuj procentowo od lewej */
+    width: 300px;
+    height: 80px;
+    background: white; /* Ten przycisk ma białe tło */
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4a3728;
+    font-weight: bold;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Niewidzialne strefy na kafelkach poniżej */
+.zone-mini { top: 62%; left: 35%; width: 30%; height: 8%; }
+.zone-wide { top: 75%; left: 10%; width: 35%; height: 10%; }
+.zone-square { top: 75%; left: 55%; width: 35%; height: 10%; }
+
+/* --- PODSTRONA Z PRODUKTAMI --- */
+.products-section { padding: 120px 50px; text-align: center; }
+.section-title { font-weight: 300; font-size: 32px; margin-bottom: 60px; }
+
+.product-grid { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+.product-card { 
+    position: relative; width: 300px; height: 400px; 
+    border-radius: 20px; overflow: hidden; 
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+}
+.product-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+.product-overlay { 
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(74, 55, 40, 0.9); color: white; 
+    display: flex; flex-direction: column; justify-content: center; align-items: center; 
+    opacity: 0; transition: 0.4s; 
+}
+.product-card:hover .product-overlay { opacity: 1; }
+.product-card:hover img { transform: scale(1.1); }
+.btn-detail { margin-top: 20px; padding: 10px 25px; background: white; color: #4a3728; text-decoration: none; border-radius: 5px; font-weight: bold; }
+/* Strefa kliku dla Instagrama */
+.zone-instagram {
+    top: 53.5%; /* Musisz wycelować w ikonkę na zdjęciu */
+    left: 48%;  /* Środek strony */
+    width: 80px; /* Rozmiar ikonki */
+    height: 80px;
+    border-radius: 20px; /* Zaokrąglenie, żeby pasowało do ikonki */
+    transform: translateX(-50%); /* Idealne wyśrodkowanie */
+    
+    /* Na czas ustawiania odkomentuj linię poniżej, żeby widzieć czerwoną ramkę */
+    border: 2px solid red;
+}
