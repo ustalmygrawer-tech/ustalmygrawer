@@ -54,39 +54,283 @@ body {
 }
 
 /* Niewidzialne strefy na kafelkach poniżej */
-.zone-mini { top: 62%; left: 35%; width: 30%; height: 8%; }
-.zone-wide { top: 75%; left: 10%; width: 35%; height: 10%; }
-.zone-square { top: 75%; left: 55%; width: 35%; height: 10%; }
+.zone-mini { top: 60%; left: 35%; width: 30%; height: 12%;}
+.zone-wide { top: 73.5%; left: 10%; width: 30%; height: 12%; }
+.zone-square { top: 73.5%; left: 60%; width: 30%; height: 12%;}
 
 /* --- PODSTRONA Z PRODUKTAMI --- */
 .products-section { padding: 120px 50px; text-align: center; }
 .section-title { font-weight: 300; font-size: 32px; margin-bottom: 60px; }
 
-.product-grid { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
-.product-card { 
-    position: relative; width: 300px; height: 400px; 
-    border-radius: 20px; overflow: hidden; 
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+.product-grid {
+    display: flex;         /* Ustawiamy elastyczny układ w poziomie */
+    flex-wrap: wrap;       /* Jeśli zabraknie miejsca, produkty przejdą do nowej linii */
+    justify-content: flex-start; /* TO WYRÓWNUJE DO LEWEJ */
+    gap: 15px;             /* TUTAJ ZMNIEJSZAMY ODLEGŁOŚĆ MIĘDZY NIMI */
+    padding: 20px;
+    max-width: 1200px;     /* Opcjonalnie: żeby produkty nie rozjechały się na bardzo szerokim ekranie */
+    margin: 0;             /* Usuwamy centrowanie całego kontenera */
 }
-.product-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
-.product-overlay { 
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-    background: rgba(74, 55, 40, 0.9); color: white; 
-    display: flex; flex-direction: column; justify-content: center; align-items: center; 
-    opacity: 0; transition: 0.4s; 
+.product-card {
+    width: 350px;          /* Twoja ustalona szerokość */
+    margin: 0;             /* Usuwamy marginesy, bo 'gap' w kontenerze załatwia sprawę */
+    display: block;
 }
-.product-card:hover .product-overlay { opacity: 1; }
-.product-card:hover img { transform: scale(1.1); }
-.btn-detail { margin-top: 20px; padding: 10px 25px; background: white; color: #4a3728; text-decoration: none; border-radius: 5px; font-weight: bold; }
+
+.product-link {
+    text-decoration: none; /* Usuwa podkreślenie linku */
+    color: inherit;
+}
+
+.image-container {
+    width: 100%;
+    height: 450px; /* Dopasuj wysokość pod swoje zdjęcia */
+    border-radius: 10px; /* Zaokrąglenie zdjęcia */
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease; /* Płynne powiększenie */
+}
+
+/* Efekt najechania - zdjęcie się lekko powiększa */
+.product-card:hover img {
+    transform: scale(1.05);
+}
+
+.product-info {
+    text-align: left; /* Loreve ma tekst do lewej */
+    padding: 0 5px;
+}
+
+.product-name {
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    text-transform: uppercase; /* Duże litery dla elegancji */
+    color: #333;
+}
+
+.price {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #000;
+}
 /* Strefa kliku dla Instagrama */
 .zone-instagram {
-    top: 53.5%; /* Musisz wycelować w ikonkę na zdjęciu */
-    left: 48%;  /* Środek strony */
-    width: 80px; /* Rozmiar ikonki */
-    height: 80px;
+    top: 52.0%; /* Musisz wycelować w ikonkę na zdjęciu */
+    left: 53.5%;  /* Środek strony */
+    width: 108px; /* Rozmiar ikonki */
+    height: 110px;
     border-radius: 20px; /* Zaokrąglenie, żeby pasowało do ikonki */
     transform: translateX(-50%); /* Idealne wyśrodkowanie */
     
     /* Na czas ustawiania odkomentuj linię poniżej, żeby widzieć czerwoną ramkę */
-    border: 2px solid red;
+    /*border: 2px solid red;*/
+}
+/* Wspólny styl dla social mediów (okrągłe) */
+.social-fb, .social-ig, .social-tt {
+    width: 80px;
+    height: 80px;
+    border-radius: 47%;
+    top: 87.9%; /* Tutaj musisz wycelować w pionie */
+}
+
+/* Pozycje w poziomie dla social mediów */
+.social-fb { left: 64%; }
+.social-ig { left: 75%; }
+.social-tt { left: 86%; }
+
+/* Strefy dla kontaktu (podłużne kafelki) */
+.contact-phone, .contact-email {
+    width: 500px;
+    height: 83px;
+    left: 77.5%;
+    border-radius: 40px;
+    transform: translateX(-50%);
+}
+
+.contact-phone { top: 92.2%; }
+.contact-email { top: 96%; }
+/* Ustawienie pozycji dla obrazka, aby badge mógł się do niego przykleić */
+.image-container {
+    position: relative; /* Ważne! */
+}
+
+/* Styl etykiety Bestseller */
+.badge {
+    position: absolute;
+    top: 15px;      /* Odstęp od góry zdjęcia */
+    left: 15px;     /* Odstęp od lewej zdjęcia */
+    background-color: rgba(255, 255, 255, 0.9); /* Biały, lekko przezroczysty */
+    color: #4a3728; /* Twój brązowy kolor tekstu */
+    padding: 5px 12px;
+    font-size: 0.7rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 4px; /* Loreve ma bardzo delikatne zaokrąglenie lub proste rogi */
+    z-index: 10;    /* Żeby napis był zawsze nad zdjęciem */
+    pointer-events: none; /* Żeby kliknięcie w napis przechodziło do zdjęcia */
+}
+.shift-left {
+    object-position: 0% center !important; /* Wymusza trzymanie się lewej krawędzi zdjęcia */
+}
+/* Układ strony produktu */
+.product-page-container {
+    max-width: 1000px; /* Nie za szeroko, żeby tekst był czytelny */
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: sans-serif;
+}
+/* KONTENER GALERII */
+.product-gallery-grid {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+/* GŁÓWNE ZDJĘCIE (LEWA STRONA) */
+.main-photo {
+    flex: 2; /* Zajmuje 2 części miejsca */
+}
+
+.main-photo img {
+    width: 100%;
+    height: 600px; /* Możesz zmniejszyć do 500px jeśli za duże */
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+}
+
+/* BOCZNE ZDJĘCIA (PRAWA STRONA) */
+.side-photos {
+    flex: 1; /* Zajmuje 1 część miejsca */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.side-photos img {
+    width: 100%;
+    height: calc(300px - 7.5px); /* Połowa wysokości głównego zdjęcia minus połowa odstępu */
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+}
+
+/* ODSTĘP DLA INFO POD SPODEM */
+.product-main-info {
+    clear: both;
+    margin-top: 40px;
+}
+
+/* Responsywność - na telefonach zdjęcia będą jedno pod drugim */
+@media (max-width: 768px) {
+    .product-multigallery {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+    .gallery-side {
+        flex-direction: row;
+    }
+    .gallery-side img {
+        height: 250px;
+    }
+}
+
+/* INFO O PRODUKCIE */
+.title-price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.product-title { font-size: 1.8rem; margin: 0; }
+.product-price { font-size: 1.5rem; font-weight: bold; color: #333; }
+
+.product-description-full {
+    line-height: 1.6;
+    font-size: 1.05rem;
+    color: #444;
+}
+/* 2. POPRAWKA DLA "INNYCH KOLORÓW" (DÓŁ) */
+.related-grid {
+   display: flex !important;
+    gap: 20px !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+}
+
+.related-item {
+    width: 200px !important;
+    max-width: 200px !important;
+    display: block !important;
+    text-decoration: none !important;
+    color: #333 !important;
+}
+
+.related-item img {
+   width: 200px !important;
+    height: 200px !important;
+    object-fit: cover !important; /* To przytnie zdjęcie do kwadratu */
+    border-radius: 10px !important;
+    display: block !important;
+}
+
+.related-item p {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+}
+/* Styl dla kursora, żeby było wiadomo, że można kliknąć */
+.zoomable {
+    cursor: zoom-in;
+    transition: 0.3s;
+}
+.zoomable:hover {
+    opacity: 0.9;
+}
+
+/* Tło modala (ukryte domyślnie) */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    align-items: center;
+    justify-content: center;
+}
+
+/* Powiększone zdjęcie */
+#imgContainer {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
+/* Przycisk zamykania */
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
 }

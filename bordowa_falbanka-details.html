@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bordowa Falbanka - Szczegóły</title>
+    <!-- To jest najważniejsza linijka - łączy stronę ze stylami -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Jeśli masz menu nawigacyjne, wklej je tutaj, żeby klient mógł wrócić do sklepu -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="mini.html">instax MINI</a>
+                <a href="square.html">instax SQUARE</a>
+                <a href="wide.html">instax WIDE</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="product-page-container">
+        <!-- SEKCJA 1: Galeria zdjęć ze strzałkami -->
+<div class="product-gallery-grid">
+    <div class="main-photo">
+        <img src="bordowafalbanka1.jpg" class="zoomable" onclick="openFullImg(this.src)" alt="Zdjęcie główne">
+    </div>
+    <div class="side-photos">
+        <img src="bordowafalbanka2.jpg" class="zoomable" onclick="openFullImg(this.src)" alt="Detal 1">
+        <img src="bordowafalbanka3.jpg" class="zoomable" onclick="openFullImg(this.src)" alt="Detal 2">
+    </div>
+</div>
+
+<div id="fullImgModal" class="modal" onclick="closeFullImg()">
+    <span class="close-btn">&times;</span>
+    <img id="imgContainer" src="">
+</div>
+    <!-- SEKCJA 2: Info pod zdjęciami (Styl Loreve) -->
+    <div class="product-main-info">
+        <div class="title-price-row">
+            <h1 class="product-title">INSTAX MINI BORDOWA FALBANKA</h1>
+            <span class="product-price">35,00 zł</span>
+        </div>
+        
+        <div class="product-description-full">
+            <p>"Bordowa Falbanka" – ramka stworzona dla tych, którzy kochają klasykę z nutką fantazji. Jej unikalny kształt falbanki w głębokim bordowym kolorze przyciąga wzrok i pięknie eksponuje każde zdjęcie typu Instax Mini.</p>
+            
+            <ul class="product-specs">
+                <li><strong>Materiał:</strong> Wysokiej jakości drewno, ręcznie malowane.</li>
+                <li><strong>Kolor:</strong> Głęboki burgund / bordowy.</li>
+                <li><strong>System:</strong> Slide-in (wsuwanie zdjęcia od góry).</li>
+                <li><strong>Wymiary:</strong> 12.5 x 11 cm.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- SEKCJA 3: "Inne ramki" (Podobne produkty) -->
+    <div class="related-products">
+        <h3>Inne kolory:</h3>
+        <a href="brazowa_falbanka-details.html" class="related-item">
+        <img src="brązowafalbanka1.jpg" alt="Instax Mini Brązowa Falbanka">
+        <p>INSTAX MINI BRĄZOWA FALBANKA</p>
+            </a>
+        </div>
+    </div>
+</main>
+<script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+
+        function moveSlide(direction) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + direction + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+    </script>
+</head>
+<script>
+    const modal = document.getElementById("fullImgModal");
+    const fullImg = document.getElementById("imgContainer");
+
+    function openFullImg(src) {
+        modal.style.display = "flex";
+        fullImg.src = src;
+    }
+
+    function closeFullImg() {
+        modal.style.display = "none";
+    }
+</script>
+</body>
+</html>
