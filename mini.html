@@ -9,15 +9,19 @@
 <body>
 
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="mini.html" class="active">instax MINI</a>
-                <a href="square.html">instax SQUARE</a>
-                <a href="wide.html">instax WIDE</a>
-            </div>
-        </div>
-    </nav>
+    <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="mini.html" class="active">instax MINI</a></li>
+        <li><a href="square.html">instax SQUARE</a></li>
+        <li><a href="wide.html">instax WIDE</a></li>
+    </ul>
+</nav>
 
     <main class="products-section">
         <h1 class="section-title">Ramki instax MINI</h1>
@@ -52,7 +56,7 @@
 <div class="product-card">
     <a href="jodełka-details.html" class="product-link">
         <div class="image-container">
-            <img src="jodełka1.jpg" class="shift-left" alt="Instax Mini Jodełka">
+            <img src="jodełka1.jpg" class="jodelka-fix" alt="Ramka Jodełka">
         </div>
         <div class="product-info">
             <h3 class="product-name">INSTAX MINI JODEŁKA</h3>
@@ -74,6 +78,15 @@
 </div>
         </div>
     </main>
+<script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
 
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
 </body>
 </html>

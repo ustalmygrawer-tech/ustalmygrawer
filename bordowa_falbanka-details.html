@@ -4,39 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bordowa Falbanka - Szczegóły</title>
-    <!-- To jest najważniejsza linijka - łączy stronę ze stylami -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Jeśli masz menu nawigacyjne, wklej je tutaj, żeby klient mógł wrócić do sklepu -->
+
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="mini.html">instax MINI</a>
-                <a href="square.html">instax SQUARE</a>
-                <a href="wide.html">instax WIDE</a>
-            </div>
-        </div>
-    </nav>
+    <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="mini.html" class="active">instax MINI</a></li>
+        <li><a href="square.html">instax SQUARE</a></li>
+        <li><a href="wide.html">instax WIDE</a></li>
+    </ul>
+</nav>
 
-    <main class="product-page-container">
-        <!-- SEKCJA 1: Galeria zdjęć ze strzałkami -->
-<div class="product-gallery-grid">
+   <div class="product-gallery-grid mobile-swipe">
     <div class="main-photo">
-        <img src="bordowafalbanka1.jpg" class="zoomable" onclick="openFullImg(this.src)" alt="Zdjęcie główne">
+        <img src="bordowafalbanka1.jpg" class="zoomable" onclick="openFullImg(0)" alt="Zdjęcie główne">
     </div>
-    <div class="side-photos">
-        <img src="bordowafalbanka2.jpg" class="zoomable" onclick="openFullImg(this.src)" alt="Detal 1">
-        <img src="bordowafalbanka3.jpg" class="zoomable" onclick="openFullImg(this.src)" alt="Detal 2">
+    <div class="side-photo-item">
+        <img src="bordowafalbanka2.jpg" class="zoomable" onclick="openFullImg(1)" alt="Detal 1">
+    </div>
+    <div class="side-photo-item">
+        <img src="bordowafalbanka3.jpg" class="zoomable" onclick="openFullImg(2)" alt="Detal 2">
     </div>
 </div>
 
-<div id="fullImgModal" class="modal" onclick="closeFullImg()">
-    <span class="close-btn">&times;</span>
-    <img id="imgContainer" src="">
-</div>
-    <!-- SEKCJA 2: Info pod zdjęciami (Styl Loreve) -->
+    <div id="fullImgModal" class="modal">
+        <span class="close-btn" onclick="closeFullImg()">&times;</span>
+        <button class="modal-arrow prev" onclick="changeModalSlide(-1)">❮</button>
+        <img id="imgContainer" src="">
+        <button class="modal-arrow next" onclick="changeModalSlide(1)">❯</button>
+    </div>
+
     <div class="product-main-info">
         <div class="title-price-row">
             <h1 class="product-title">INSTAX MINI BORDOWA FALBANKA</h1>
@@ -44,50 +49,74 @@
         </div>
         
         <div class="product-description-full">
-            <p>"Bordowa Falbanka" – ramka stworzona dla tych, którzy kochają klasykę z nutką fantazji. Jej unikalny kształt falbanki w głębokim bordowym kolorze przyciąga wzrok i pięknie eksponuje każde zdjęcie typu Instax Mini.</p>
-            
+            <p>Postaw na kolor, który rządzi wnętrzami. Głęboki, nasycony odcień bordo dodaje wnętrzu elegancji i szlachetnego charakteru, idealnie podkreślając kolory Twoich zdjęć.
+System slide-in pozwala na wymianę zdjęcia w sekundę - po prostu wsuwasz fotografię od góry w szczelinę.
+Twoje wspomnienia zasługują na oprawę, która przyciąga spojrzenia!</p>
             <ul class="product-specs">
-                <li><strong>Materiał:</strong> Wysokiej jakości drewno, ręcznie malowane.</li>
-                <li><strong>Kolor:</strong> Głęboki burgund / bordowy.</li>
-                <li><strong>System:</strong> Slide-in (wsuwanie zdjęcia od góry).</li>
-                <li><strong>Wymiary:</strong> 12.5 x 11 cm.</li>
-            </ul>
+    <li>Materiał: drewno, ręcznie malowane.</li>
+    <li>System: slide-in. Zdjęcie wsuwane jednym ruchem od góry.</li>
+    <li>Wymiary: 12.5 x 11 cm.</li>
+    <ul class="product-specs"></ul>
+</ul>
         </div>
     </div>
 
-    <!-- SEKCJA 3: "Inne ramki" (Podobne produkty) -->
     <div class="related-products">
         <h3>Inne kolory:</h3>
-        <a href="brazowa_falbanka-details.html" class="related-item">
-        <img src="brązowafalbanka1.jpg" alt="Instax Mini Brązowa Falbanka">
-        <p>INSTAX MINI BRĄZOWA FALBANKA</p>
+        <div class="related-grid">
+            <a href="brazowa_falbanka-details.html" class="related-item">
+                <img src="brązowafalbanka1.jpg" alt="Brązowa Falbanka">
+                <p>INSTAX MINI BRĄZOWA FALBANKA</p>
             </a>
         </div>
     </div>
-</main>
-<script>
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
 
-        function moveSlide(direction) {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + direction + slides.length) % slides.length;
-            slides[currentSlide].classList.add('active');
+    <script>
+        const modal = document.getElementById("fullImgModal");
+        const fullImg = document.getElementById("imgContainer");
+        const galleryImages = [
+            "bordowafalbanka1.jpg",
+            "bordowafalbanka2.jpg",
+            "bordowafalbanka3.jpg"
+        ];
+        let currentModalIndex = 0;
+
+        // Funkcja menu
+        function toggleMenu() {
+            const navLinks = document.getElementById("navLinks");
+            navLinks.classList.toggle("active");
+        }
+
+        // Funkcje galerii
+        function openFullImg(index) {
+            currentModalIndex = index;
+            fullImg.src = galleryImages[currentModalIndex];
+            modal.style.display = "flex";
+        }
+
+        function closeFullImg() {
+            modal.style.display = "none";
+        }
+
+        function changeModalSlide(direction) {
+            currentModalIndex = (currentModalIndex + direction + galleryImages.length) % galleryImages.length;
+            fullImg.src = galleryImages[currentModalIndex];
+        }
+
+        // Zamknięcie po kliknięciu w tło
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeFullImg();
+            }
         }
     </script>
-</head>
-<script>
-    const modal = document.getElementById("fullImgModal");
-    const fullImg = document.getElementById("imgContainer");
+    <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
 
-    function openFullImg(src) {
-        modal.style.display = "flex";
-        fullImg.src = src;
-    }
-
-    function closeFullImg() {
-        modal.style.display = "none";
-    }
-</script>
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>

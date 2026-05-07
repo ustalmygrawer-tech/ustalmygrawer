@@ -1,49 +1,73 @@
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* --- 1. PODSTAWOWE USTAWIENIA (RESET) --- */
+* { 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
 
 body { 
     font-family: 'Helvetica Neue', Arial, sans-serif; 
-    background-color: #f6f3f0; 
+    background-color: #f4f8fb; 
     color: #4a3728;
+    overflow-x: hidden; 
+    width: 100%;
 }
 
-/* --- NAWIGACJA --- */
-.navbar { 
-    position: fixed; top: 0; width: 100%; 
-    background: white; padding: 15px 0; z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+/* --- 2. NAWIGACJA (PC) --- */
+.navbar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 20px 5%;
+    background-color: #fff;
+    position: relative;
+    z-index: 1001;
 }
-.nav-container { max-width: 1400px; margin: 0 auto; display: flex; justify-content: flex-end; padding: 0 50px; }
-.nav-links a { 
-    text-decoration: none; color: #4a3728; margin-left: 30px; 
-    font-size: 13px; font-weight: 200; /* Bardzo cienka czcionka */
-    letter-spacing: 1px; transition: 0.3s;
-}
-.nav-links a.active, .nav-links a:hover { font-weight: 700; }
 
-/* --- STRONA GŁÓWNA (OBRAZ) --- */
+.menu-toggle { display: none; cursor: pointer; }
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.nav-links a.active {
+    font-weight: 900;
+    color: #800020;
+}
+
+.nav-links a:hover { color: #800020; }
+
+/* --- 3. STRONA GŁÓWNA & HOTSPOTY --- */
 .home-container {
     width: 100%;
-    position: relative; /* Pozwala układać przyciski na obrazie */
-    padding-top: 50px; /* Miejsce na navbar */
+    position: relative;
 }
+
 .main-bg-image {
     width: 100%;
     display: block;
 }
 
-/* --- STREFY KLIKALNE (HOTSPOTY) --- */
 .hotspot {
     position: absolute;
     text-decoration: none;
 }
 
-/* Przycisk na samej górze "Sprawdź dostępne ramki" */
 .main-btn-top {
-    top: 23.5%; /* Dopasuj procentowo wysokość */
-    left: 5.7%; /* Dopasuj procentowo od lewej */
+    top: 22.0%;
+    left: 5.7%;
     width: 300px;
     height: 80px;
-    background: white; /* Ten przycisk ma białe tło */
+    background: white;
     border-radius: 50px;
     display: flex;
     align-items: center;
@@ -53,284 +77,317 @@ body {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-/* Niewidzialne strefy na kafelkach poniżej */
-.zone-mini { top: 60%; left: 35%; width: 30%; height: 12%;}
+.zone-mini { top: 60%; left: 35%; width: 30%; height: 12%; }
 .zone-wide { top: 73.5%; left: 10%; width: 30%; height: 12%; }
-.zone-square { top: 73.5%; left: 60%; width: 30%; height: 12%;}
+.zone-square { top: 73.5%; left: 60%; width: 30%; height: 12%; }
+/* Strefa kliku dla Instagrama */
+.zone-instagram {
+    position: absolute; /* To jest kluczowe, żeby strefa "latała" nad zdjęciem */
+    top: 51.0%;
+    left: 53.5%;
+    width: 108px;
+    height: 110px;
+    border-radius: 20px;
+    transform: translateX(-50%);
+    z-index: 20; /* Żeby na pewno była nad zdjęciem */
+    /* border: 2px solid red;  <- odkomentuj, żeby widzieć gdzie jest strefa */
+}
 
-/* --- PODSTRONA Z PRODUKTAMI --- */
+/* Social Media & Kontakt */
+.social-fb, .social-ig, .social-tt {
+    width: 80px; height: 80px; border-radius: 47%; top: 87.9%;
+}
+.social-fb { left: 64%; }
+.social-ig { left: 75%; }
+.social-tt { left: 86%; }
+
+.contact-phone, .contact-email {
+    width: 500px; height: 83px; left: 77.5%; border-radius: 40px; transform: translateX(-50%);
+}
+.contact-phone { top: 92.2%; }
+.contact-email { top: 96%; }
+
+/* --- 4. LISTA PRODUKTÓW (SKLEP) --- */
 .products-section { padding: 120px 50px; text-align: center; }
-.section-title { font-weight: 300; font-size: 32px; margin-bottom: 60px; }
 
 .product-grid {
-    display: flex;         /* Ustawiamy elastyczny układ w poziomie */
-    flex-wrap: wrap;       /* Jeśli zabraknie miejsca, produkty przejdą do nowej linii */
-    justify-content: flex-start; /* TO WYRÓWNUJE DO LEWEJ */
-    gap: 15px;             /* TUTAJ ZMNIEJSZAMY ODLEGŁOŚĆ MIĘDZY NIMI */
+    display: grid !important;
+    /* Wymuszamy 3 równe kolumny na komputerze */
+    grid-template-columns: repeat(3, 1fr) !important; 
+    gap: 25px; /* Odstęp między ramkami */
     padding: 20px;
-    max-width: 1200px;     /* Opcjonalnie: żeby produkty nie rozjechały się na bardzo szerokim ekranie */
-    margin: 0;             /* Usuwamy centrowanie całego kontenera */
-}
-.product-card {
-    width: 350px;          /* Twoja ustalona szerokość */
-    margin: 0;             /* Usuwamy marginesy, bo 'gap' w kontenerze załatwia sprawę */
-    display: block;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.product-link {
-    text-decoration: none; /* Usuwa podkreślenie linku */
-    color: inherit;
+.product-card {
+    width: 100% !important; /* Karta zajmuje całą dostępną szerokość kolumny siatki */
+    text-align: left !important;
+    display: flex;
+    flex-direction: column;
 }
 
 .image-container {
     width: 100%;
-    height: 450px; /* Dopasuj wysokość pod swoje zdjęcia */
-    border-radius: 10px; /* Zaokrąglenie zdjęcia */
-    overflow: hidden;
-    margin-bottom: 10px;
+    height: 380px; /* Nieco mniejsza wysokość, żeby 3 obok siebie wyglądały zgrabnie */
+    margin-bottom: 15px !important;
 }
 
 .image-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.4s ease; /* Płynne powiększenie */
+    transition: transform 0.4s;
 }
 
-/* Efekt najechania - zdjęcie się lekko powiększa */
-.product-card:hover img {
-    transform: scale(1.05);
+.product-card:hover img { transform: scale(1.05); }
+.product-card a, .product-link {
+    text-decoration: none !important;
+}
+/* CAŁKOWITE RESETOWANIE STYLÓW LINKÓW */
+a, a:visited, a:hover, a:active {
+    text-decoration: none !important; /* Brak podkreślenia */
+    color: #4a3728 !important;      /* Twój brązowy kolor tekstu */
 }
 
-.product-info {
-    text-align: left; /* Loreve ma tekst do lewej */
-    padding: 0 5px;
-}
-
-.product-name {
-    font-size: 0.9rem;
-    font-weight: 400;
-    letter-spacing: 1px;
-    margin-bottom: 8px;
-    text-transform: uppercase; /* Duże litery dla elegancji */
-    color: #333;
-}
-
+/* Jeśli chcesz, żeby cena była czarna, a nie brązowa: */
 .price {
+    font-weight: bold !important;  /* Pogrubienie ceny */
+    display: block;                /* Żeby na pewno była w nowej linii */
+    color: #000000;                /* Czarny kolor dla ceny */
     font-size: 1rem;
-    font-weight: 700;
-    color: #000;
+    color: #000000 !important;
 }
-/* Strefa kliku dla Instagrama */
-.zone-instagram {
-    top: 52.0%; /* Musisz wycelować w ikonkę na zdjęciu */
-    left: 53.5%;  /* Środek strony */
-    width: 108px; /* Rozmiar ikonki */
-    height: 110px;
-    border-radius: 20px; /* Zaokrąglenie, żeby pasowało do ikonki */
-    transform: translateX(-50%); /* Idealne wyśrodkowanie */
-    
-    /* Na czas ustawiania odkomentuj linię poniżej, żeby widzieć czerwoną ramkę */
-    /*border: 2px solid red;*/
+.product-name {
+    font-weight: normal !important; /* Brak pogrubienia */
+    text-transform: uppercase;     /* Wielkie litery dla stylu Loreve */
+    font-size: 0.9rem;             /* Możesz dostosować wielkość */
+    margin-bottom: 5px;            /* Mały odstęp od ceny pod spodem */
+    color: #4a3728;                /* Twój kolor brązowy */
 }
-/* Wspólny styl dla social mediów (okrągłe) */
-.social-fb, .social-ig, .social-tt {
-    width: 80px;
-    height: 80px;
-    border-radius: 47%;
-    top: 87.9%; /* Tutaj musisz wycelować w pionie */
+/* Jeśli chcesz, żeby po najechaniu myszką kolor się zmieniał (np. na bordowy) */
+.product-card:hover .product-name {
+    text-decoration: underline !important;
+    text-underline-offset: 3px; /* Delikatny odstęp podkreślenia od tekstu dla lekkości */
+    color: #800020 !important;
 }
 
-/* Pozycje w poziomie dla social mediów */
-.social-fb { left: 64%; }
-.social-ig { left: 75%; }
-.social-tt { left: 86%; }
-
-/* Strefy dla kontaktu (podłużne kafelki) */
-.contact-phone, .contact-email {
-    width: 500px;
-    height: 83px;
-    left: 77.5%;
-    border-radius: 40px;
-    transform: translateX(-50%);
-}
-
-.contact-phone { top: 92.2%; }
-.contact-email { top: 96%; }
-/* Ustawienie pozycji dla obrazka, aby badge mógł się do niego przykleić */
-.image-container {
-    position: relative; /* Ważne! */
-}
-
-/* Styl etykiety Bestseller */
 .badge {
     position: absolute;
-    top: 15px;      /* Odstęp od góry zdjęcia */
-    left: 15px;     /* Odstęp od lewej zdjęcia */
-    background-color: rgba(255, 255, 255, 0.9); /* Biały, lekko przezroczysty */
-    color: #4a3728; /* Twój brązowy kolor tekstu */
+    top: 15px; left: 15px;
+    background: rgba(255, 255, 255, 0.9);
     padding: 5px 12px;
     font-size: 0.7rem;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    border-radius: 4px; /* Loreve ma bardzo delikatne zaokrąglenie lub proste rogi */
-    z-index: 10;    /* Żeby napis był zawsze nad zdjęciem */
-    pointer-events: none; /* Żeby kliknięcie w napis przechodziło do zdjęcia */
+    border-radius: 4px;
+    z-index: 10;
 }
-.shift-left {
-    object-position: 0% center !important; /* Wymusza trzymanie się lewej krawędzi zdjęcia */
-}
-/* Układ strony produktu */
+/* --- 5. STRONA PRODUKTU & GALERIA (PC) --- */
 .product-page-container {
-    max-width: 1000px; /* Nie za szeroko, żeby tekst był czytelny */
+    max-width: 1000px;
     margin: 40px auto;
     padding: 0 20px;
-    font-family: sans-serif;
 }
-/* KONTENER GALERII */
+
+/* Galeria PC */
 .product-gallery-grid {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 30px;
-    width: 100%;
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0px;
+    margin-bottom: 40px;
+}
+/* Przesunięcie samej fotografii w dół w drugim kafelku galerii */
+.product-gallery-grid div:nth-child(2) img {
+    object-position: center 30% !important; 
+}
+/* Przesunięcie samej fotografii w górę w trzecim kafelku galerii */
+.product-gallery-grid div:nth-child(3) img {
+    object-position: center 80% !important; 
 }
 
-/* GŁÓWNE ZDJĘCIE (LEWA STRONA) */
-.main-photo {
-    flex: 2; /* Zajmuje 2 części miejsca */
-}
-
-.main-photo img {
-    width: 100%;
-    height: 600px; /* Możesz zmniejszyć do 500px jeśli za duże */
+.main-photo img, .side-photo-item img {
+    width: 100% !important;
+    height: 500px;
     object-fit: cover;
-    border-radius: 10px;
-    display: block;
 }
 
-/* BOCZNE ZDJĘCIA (PRAWA STRONA) */
-.side-photos {
-    flex: 1; /* Zajmuje 1 część miejsca */
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.side-photos img {
-    width: 100%;
-    height: calc(300px - 7.5px); /* Połowa wysokości głównego zdjęcia minus połowa odstępu */
-    object-fit: cover;
-    border-radius: 10px;
-    display: block;
-}
-
-/* ODSTĘP DLA INFO POD SPODEM */
+/* Tekst i Specyfikacja */
 .product-main-info {
-    clear: both;
-    margin-top: 40px;
+    padding: 0 20px;
 }
 
-/* Responsywność - na telefonach zdjęcia będą jedno pod drugim */
-@media (max-width: 768px) {
-    .product-multigallery {
-        grid-template-columns: 1fr;
-        height: auto;
-    }
-    .gallery-side {
-        flex-direction: row;
-    }
-    .gallery-side img {
-        height: 250px;
-    }
+.product-specs { 
+    list-style: none; 
+    padding: 20px 0; 
 }
 
-/* INFO O PRODUKCIE */
-.title-price-row {
+.product-specs li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 12px;
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
 }
 
-.product-title { font-size: 1.8rem; margin: 0; }
-.product-price { font-size: 1.5rem; font-weight: bold; color: #333; }
-
-.product-description-full {
-    line-height: 1.6;
-    font-size: 1.05rem;
-    color: #444;
+.product-specs li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: #800020;
 }
-/* 2. POPRAWKA DLA "INNYCH KOLORÓW" (DÓŁ) */
+/* Układ nazwy i ceny w jednej linii */
+.title-price-row {
+    display: flex;             /* Włącza układ elastyczny */
+    justify-content: space-between; /* Rozsuwa elementy na boki: lewo i prawo */
+    align-items: center;       /* Centruje je idealnie w pionie względem siebie */
+    flex-wrap: wrap;           /* Pozwala na przejście do nowej linii na bardzo wąskich ekranach */
+    gap: 15px;                 /* Minimalny odstęp między nimi */
+    margin-bottom: 20px;       /* Odstęp od opisu pod spodem */
+}
+
+/* Stylizacja samej ceny */
+.product-price {
+    font-size: 1.2rem;         /* Wielkość zbliżona do Loreve */
+    font-weight: bold;         /* Pogrubienie dla czytelności */
+    color: #4a3728;            /* Twój kolor brązowy */
+    white-space: nowrap;       /* Zapobiega rozbiciu ceny na dwie linie */
+}
+
+/* Stylizacja tytułu, żeby nie zajął całego miejsca */
+.product-title {
+    flex: 1;                   /* Pozwala tytułowi zająć dostępną przestrzeń po lewej */
+    font-size: 1.4rem;         /* Możesz dopasować pod siebie */
+    margin: 0;                 /* Usuwa domyślne marginesy */
+}
+
+/* --- 6. OKNO POWIĘKSZENIA (MODAL) --- */
+.modal {
+    display: none; /* Kluczowe: chowa strzałki i okno na start */
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-arrow {
+    background: none; border: none; color: white;
+    font-size: 50px; cursor: pointer;
+    position: absolute; top: 50%; transform: translateY(-50%);
+    padding: 20px;
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
+
+.close-btn {
+    position: absolute; top: 20px; right: 30px;
+    color: white; font-size: 40px; cursor: pointer;
+}
+
+#imgContainer { max-width: 90%; max-height: 80%; object-fit: contain; }
+
+/* --- 7. INNE KOLORY (KAFELKI) --- */
+.related-products {
+    padding: 40px 20px;
+}
+
 .related-grid {
-   display: flex !important;
-    gap: 20px !important;
-    justify-content: flex-start !important;
-    align-items: flex-start !important;
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
 }
 
 .related-item {
-    width: 200px !important;
-    max-width: 200px !important;
-    display: block !important;
-    text-decoration: none !important;
-    color: #333 !important;
+    width: 100px;
+    text-decoration: none;
 }
 
 .related-item img {
-   width: 200px !important;
-    height: 200px !important;
-    object-fit: cover !important; /* To przytnie zdjęcie do kwadratu */
-    border-radius: 10px !important;
-    display: block !important;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+    transition: transform 0.3s;
 }
 
+.related-item:hover img {
+    transform: scale(1.05);
+}
+/* Styl dla nazwy pod małym kafelkiem */
 .related-item p {
-    margin-top: 10px;
-    font-size: 0.8rem;
+    display: block !important; /* Przywraca widoczność */
+    font-size: 12px;           /* Mała, elegancka czcionka */
+    text-align: center;        /* Środkowanie pod kafelkiem */
+    margin-top: 5px;           /* Odstęp od zdjęcia */
+    color: #4a3728;            /* Twój brązowy kolor */
+    text-transform: uppercase; /* Wielkie litery, jeśli chcesz styl sklepowy */
     font-weight: bold;
-    text-align: center;
-}
-/* Styl dla kursora, żeby było wiadomo, że można kliknąć */
-.zoomable {
-    cursor: zoom-in;
-    transition: 0.3s;
-}
-.zoomable:hover {
-    opacity: 0.9;
+    line-height: 1.2;
 }
 
-/* Tło modala (ukryte domyślnie) */
-.modal {
-    display: none; 
-    position: fixed;
-    z-index: 9999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    align-items: center;
-    justify-content: center;
-}
+@media (max-width: 768px) {
+    /* Nawigacja Mobile */
+    .menu-toggle {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+    .menu-toggle span { width: 25px; height: 3px; background: #333; }
+    
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%; left: 0; width: 100%;
+        background: white;
+        flex-direction: column;
+        padding: 20px;
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+    .nav-links.active { display: flex !important; }
 
-/* Powiększone zdjęcie */
-#imgContainer {
-    max-width: 90%;
-    max-height: 90%;
-    border-radius: 5px;
-    box-shadow: 0 0 20px rgba(255,255,255,0.2);
-}
+    /* GALERIA MOBILE - EFEKT LOREVE */
+    .product-gallery-grid {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important; /* Wymuszamy poziom */
+        width: 100vw !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory;
+        margin-left: -20px !important; /* Kompensacja paddingu kontenera */
+        padding: 0 !important;
+        gap: 0 !important;
+        border-radius: 0 !important;
+    }
 
-/* Przycisk zamykania */
-.close-btn {
-    position: absolute;
-    top: 20px;
-    right: 35px;
-    color: white;
-    font-size: 40px;
-    font-weight: bold;
-    cursor: pointer;
+    .product-gallery-grid::-webkit-scrollbar { display: none; }
+
+    /* Każdy slajd na cały ekran */
+    .main-photo, .side-photo-item {
+        flex: 0 0 100vw !important;
+        min-width: 100vw !important;
+        scroll-snap-align: start;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .main-photo img, .side-photo-item img {
+        width: 100vw !important;
+        height: auto !important;
+        max-height: 450px;
+        border-radius: 0 !important; /* Ostre rogi */
+        object-fit: cover;
+    }
+
+    /* Hotspoty Mobile */
+    .hotspot.main-btn-top {
+        top: 22% !important; left: 6% !important;
+        width: 115px !important; height: 30px !important;
+        font-size: 0.7rem !important;
+    }
+    .nav-links.active { display: flex !important; }
+}
+.jodelka-fix {
+    object-position: 20% center !important; /* Przesuwa kadr zdjęcia w prawo */
 }

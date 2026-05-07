@@ -8,16 +8,20 @@
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="mini.html">instax MINI</a>
-                <a href="square.html" class="active">instax SQUARE</a>
-                <a href="wide.html">instax WIDE</a>
-            </div>
-        </div>
-    </nav>
+     <nav class="navbar">
+    <div class="menu-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+    
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="mini.html">instax MINI</a></li>
+        <li><a href="square.html" class="active">instax SQUARE</a></li>
+        <li><a href="wide.html">instax WIDE</a></li>
+    </ul>
+</nav>
 
     <main class="products-section">
         <h1 class="section-title">Ramki instax SQUARE</h1>
@@ -34,6 +38,15 @@
             <!-- Tutaj możesz dodawać kolejne .product-card w przyszłości -->
         </div>
     </main>
+<script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
 
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
 </body>
 </html>
