@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dziękujemy za zamówienie! | Ustalmy Grawer</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .thank-you-container {
+            max-width: 600px;
+            margin: 80px auto;
+            padding: 40px;
+            text-align: center;
+            font-family: 'Helvetica', sans-serif;
+            border: 1px solid #eee;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .thank-you-container h1 {
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+            color: #1a1a1a;
+        }
+        .payment-details {
+            background: #fafafa;
+            padding: 25px;
+            border: 1px dashed #ccc;
+            margin: 30px 0;
+            text-align: left;
+            line-height: 1.6;
+        }
+        .payment-details p {
+            margin: 8px 0;
+            font-size: 0.9rem;
+        }
+        a.btn-home {
+            display: inline-block;
+            background: #1a1a1a;
+            color: #ffffff !important; /* Wymuszona czysta biel */
+            padding: 18px 35px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: bold;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        .btn-home:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="thank-you-container">
+        <h1>Dziękujemy za zamówienie!</h1>
+        <p>Twoje zgłoszenie zostało pomyślnie wysłane. Zaraz weźmiemy się do pracy!</p>
+        
+        <div class="payment-details">
+            <p style="font-weight: bold; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; color: #666; margin-bottom: 15px;">Dane do płatności:</p>
+            <p><strong>BLIK na telefon:</strong> 794 085 821</p>
+            <p><strong>Przelew tradycyjny:</strong><br>
+               Nr konta: <span style="letter-spacing: 1px;">[WPISZ TUTAJ SWÓJ NUMER KONTA]</span><br>
+               Odbiorca: Ustalmy Grawer</p>
+            <p style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee;">
+               <strong>Tytuł przelewu:</strong> Zamówienie - [Twoje Imię i Nazwisko]
+            </p>
+        </div>
+
+        <p style="font-size: 0.85rem; color: #666; margin-bottom: 35px; line-height: 1.5;">
+            Realizację ramki rozpoczniemy po zaksięgowaniu wpłaty. 
+            Potwierdzenie otrzymasz również drogą mailową.
+        </p>
+
+        <a href="index.html" class="btn-home">Powrót do strony głównej</a>
+    </div>
+      <script>
+    // Po wejściu na stronę podziękowania, usuwamy dane z pamięci przeglądarki
+    localStorage.removeItem('cart');
+    // Jeśli używasz innej nazwy w cart.js, upewnij się że tu jest taka sama
+</script>
+</body>
+</html>

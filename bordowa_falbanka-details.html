@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bordowa Falbanka - Szczegóły</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://geowidget.inpost.pl/sdk/for-javascript.js"></script>
+<link rel="stylesheet" href="https://geowidget.inpost.pl/sdk/for-javascript.css">
 </head>
 <body>
 
@@ -17,9 +19,20 @@
     
     <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="mini.html" class="active">instax MINI</a></li>
+        <li><a href="mini.html">instax MINI</a></li>
         <li><a href="square.html">instax SQUARE</a></li>
         <li><a href="wide.html">instax WIDE</a></li>
+        <li class="cart-wrapper">
+    <div class="cart-container" onclick="toggleCart()">
+        <span class="cart-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="8" width="18" height="13" rx="2" ry="2"></rect>
+                <path d="M16 10a4 4 0 0 0-8 0"></path>
+            </svg>
+            <span id="cart-count" class="cart-badge" style="display: none;">0</span>
+        </span>
+    </div>
+</li>
     </ul>
 </nav>
 
@@ -46,6 +59,10 @@
         <div class="title-price-row">
             <h1 class="product-title">INSTAX MINI BORDOWA FALBANKA</h1>
             <span class="product-price">35,00 zł</span>
+            <button class="buy-button" 
+        onclick="addToCart('Bordowa Falbanka', 35, 'bordowafalbanka1.jpg')">
+    DODAJ DO KOSZYKA
+</button>
         </div>
         
         <div class="product-description-full">
@@ -58,9 +75,10 @@ Twoje wspomnienia zasługują na oprawę, która przyciąga spojrzenia!</p>
     <li>Wymiary: 12.5 x 11 cm.</li>
     <ul class="product-specs"></ul>
 </ul>
+    </form>
+</section>
         </div>
     </div>
-
     <div class="related-products">
         <h3>Inne kolory:</h3>
         <div class="related-grid">
@@ -71,52 +89,111 @@ Twoje wspomnienia zasługują na oprawę, która przyciąga spojrzenia!</p>
         </div>
     </div>
 
-    <script>
-        const modal = document.getElementById("fullImgModal");
-        const fullImg = document.getElementById("imgContainer");
-        const galleryImages = [
-            "bordowafalbanka1.jpg",
-            "bordowafalbanka2.jpg",
-            "bordowafalbanka3.jpg"
-        ];
-        let currentModalIndex = 0;
+    <div id="cart-popup" class="popup-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
+    <div class="popup-content" style="background: white; padding: 40px; border-radius: 0; max-width: 850px; width: 95%; color: #1a1a1a; position: relative; font-family: 'Helvetica', sans-serif; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
+    
+        <span class="close-popup" onclick="toggleCart()" style="position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 28px; color: #999;">&times;</span>
+        
+        <h2 style="text-transform: uppercase; font-size: 1.1rem; letter-spacing: 3px; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 25px; font-weight: 400;">Twój Koszyk</h2>
+        
+        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px;">
+            
+            <div>
+                <div id="cart-items-list" style="margin-bottom: 30px; max-height: 250px; overflow-y: auto; padding-right: 10px;">
+                </div>
 
-        // Funkcja menu
-        function toggleMenu() {
-            const navLinks = document.getElementById("navLinks");
-            navLinks.classList.toggle("active");
-        }
+                <p style="font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; border-top: 1px solid #eee; padding-top: 20px;">Dane do wysyłki:</p>
+                
+                <form action="https://formspree.io/f/mwvynybl" method="POST" id="checkout-form" style="display: flex; flex-direction: column; gap: 10px;">
+    <input type="hidden" name="_next" value="https://ustalmygrawer.github.io/dziekujemy.html">                
+    <input type="hidden" name="Produkty" id="form-products">
+    <input type="hidden" name="Suma_Calkowita" id="form-total">
+    <input type="hidden" name="Zastosowany_Rabat" id="form-discount">
+    
+    <input type="text" name="name" placeholder="Imię i Nazwisko" required style="padding: 12px; border: 1px solid #ddd; font-size: 0.9rem;">
+    <input type="email" name="email" placeholder="E-mail" required style="padding: 12px; border: 1px solid #ddd; font-size: 0.9rem;">
+    
+    <div id="paczkomat-box" style="display: none; background: #f9f9f9; padding: 10px; border: 1px solid #eee;">
+    <label style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: #666;">Numer Paczkomatu:</label>
+    <input type="text" id="paczkomat-search" name="Nr_Paczkomatu" placeholder="Np. KRA01M" style="width: 100%; padding: 10px; border: 1px solid #1a1a1a; font-size: 0.9rem; margin-top: 5px;">
+    
+    <label style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: #666; margin-top: 10px; display: block;">Numer telefonu:</label>
+    <input type="tel" id="paczkomat-phone" name="Telefon_Paczkomat" placeholder="Dla powiadomień InPost" style="width: 100%; padding: 10px; border: 1px solid #ddd; font-size: 0.9rem; margin-top: 5px;">
+</div>
 
-        // Funkcje galerii
+    <div id="address-box" style="display: none;"> 
+        <p id="address-label" style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: #666; margin-bottom: 10px; margin-top: 15px;">
+            Dane do wysyłki kurierem:
+        </p>
+        
+        <input type="text" name="street" id="street" placeholder="Ulica" style="padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; width: 100%; box-sizing: border-box;">
+        
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <input type="text" name="house_no" id="house_no" placeholder="Nr domu" style="width: 50%; padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; box-sizing: border-box;">
+            <input type="text" name="apt_no" id="apt_no" placeholder="Nr mieszkania" style="width: 50%; padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; box-sizing: border-box;">
+        </div>
+        
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <input type="text" name="zip" id="zip" placeholder="Kod pocztowy" style="width: 40%; padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; box-sizing: border-box;">
+            <input type="text" name="city" id="city" placeholder="Miejscowość" style="width: 60%; padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; box-sizing: border-box;">
+        </div>
+
+        <input type="tel" name="phone" id="customer-phone" placeholder="Numer telefonu dla kuriera" style="margin-top: 10px; padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; width: 100%; box-sizing: border-box;">
+    </div>
+</form>
+            </div>
+
+            <div style="background: #fafafa; padding: 25px; border: 1px solid #eee; height: fit-content;">
+                <div style="margin-bottom: 25px;">
+                    <p style="font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Kod rabatowy</p>
+                    <div style="display: flex; gap: 0;">
+                        <input type="text" id="discount-code" placeholder="KOD" style="width: 60%; padding: 10px; border: 1px solid #ddd; border-right: none; font-size: 0.8rem; outline: none;">
+                        <button type="button" onclick="applyDiscount()" style="width: 40%; background: #1a1a1a; color: white; border: none; padding: 0 10px; cursor: pointer; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px;">Aktywuj</button>
+                    </div>
+                    <p id="discount-msg" style="font-size: 0.65rem; margin-top: 5px; min-height: 15px;"></p>
+                </div>
+
+                <div style="margin-bottom: 20px;">
+                    <label style="font-size: 0.75rem; text-transform: uppercase; font-weight: bold; letter-spacing: 1px;">Dostawa:</label>
+<select id="shipping-method" onchange="checkShippingMethod()" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 0.9rem; width: 100%;">
+    <option value="">Wybierz sposób dostawy...</option>
+    <option value="12">Paczkomat InPost — 12,00 zł</option>
+    <option value="20">Kurier InPost — 20,00 zł</option>
+</select>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: baseline; font-size: 1.2rem; font-weight: bold; border-top: 1px solid #ddd; padding-top: 15px; margin-bottom: 20px;">
+                    <span style="font-size: 0.8rem; font-weight: normal; color: #666;">DO ZAPŁATY:</span>
+                    <span id="cart-total">0,00 zł</span>
+                </div>
+
+                <div style="text-align: center; margin-bottom: 20px; border: 1px dashed #ccc; padding: 10px;">
+                    <p style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; color: #1a1a1a;">Płatność przelewem lub BLIK</p>
+                    <p style="font-size: 0.65rem; color: #666; line-height: 1.3;">
+                        To nie jest bramka płatnicza. Dane do wpłaty otrzymasz w podsumowaniu po złożeniu zamówienia.
+                    </p>
+                </div>
+                
+<button type="submit" form="checkout-form" class="checkout-btn" style="width: 100%; background: #1a1a1a; color: white; padding: 18px; border: none; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; cursor: pointer; font-size: 0.85rem;">
+    Złóż zamówienie
+</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+        const galleryImages = ["bordowafalbanka1.jpg", "bordowafalbanka2.jpg", "bordowafalbanka3.jpg"];
         function openFullImg(index) {
-            currentModalIndex = index;
-            fullImg.src = galleryImages[currentModalIndex];
-            modal.style.display = "flex";
-        }
-
-        function closeFullImg() {
-            modal.style.display = "none";
-        }
-
-        function changeModalSlide(direction) {
-            currentModalIndex = (currentModalIndex + direction + galleryImages.length) % galleryImages.length;
-            fullImg.src = galleryImages[currentModalIndex];
-        }
-
-        // Zamknięcie po kliknięciu w tło
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                closeFullImg();
-            }
-        }
+    const modal = document.getElementById("imgModal");
+    const container = document.getElementById("imgContainer");
+    
+    if (modal && container) {
+        currentImgIndex = index;
+        container.src = galleryImages[index];
+        modal.style.display = "flex";
+    }
+}
     </script>
-    <script>
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
-
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
-    </script>
+    <script src="cart.js"></script>
 </body>
 </html>

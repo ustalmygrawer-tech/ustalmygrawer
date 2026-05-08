@@ -16,9 +16,9 @@ body {
 /* --- 2. NAWIGACJA (PC) --- */
 .navbar {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-end; /* Spycha menu na prawo */
     align-items: center;
-    padding: 20px 5%;
+    padding: 20px 5%; /* Zwiększ padding, żeby menu nie dotykało krawędzi okna */
     background-color: #fff;
     position: relative;
     z-index: 1001;
@@ -28,6 +28,7 @@ body {
 
 .nav-links {
     display: flex;
+    align-items: center; /* Centruje napisy i koszyk w pionie */
     list-style: none;
     gap: 30px;
 }
@@ -110,14 +111,45 @@ body {
 /* --- 4. LISTA PRODUKTÓW (SKLEP) --- */
 .products-section { padding: 120px 50px; text-align: center; }
 
+/* --- POPRAWKA RESPONSYWNOŚCI --- */
+
+/* Standardowo (na telefonach) - jedna kolumna */
 .product-grid {
     display: grid !important;
-    /* Wymuszamy 3 równe kolumny na komputerze */
-    grid-template-columns: repeat(3, 1fr) !important; 
-    gap: 25px; /* Odstęp między ramkami */
+    grid-template-columns: 1fr !important; /* Jedna duża ramka na całą szerokość */
+    gap: 20px;
     padding: 20px;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+/* Na tabletach (powyżej 600px) - dwie kolumny */
+@media (min-width: 600px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+/* Na komputerach (powyżej 1024px) - Twoje wymarzone trzy kolumny */
+@media (min-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr) !important;
+    }
+}
+
+/* Poprawka dla obrazków, żeby nie były zniekształcone */
+.product-card {
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+}
+
+.image-container {
+    width: 100%;
+    height: auto; /* Pozwalamy zdjęciu zachować proporcje */
+    aspect-ratio: 4 / 5; /* Utrzymuje ładny, pionowy kształt Loreve */
+    overflow: hidden;
+    border-radius: 10px;
 }
 
 .product-card {
@@ -157,6 +189,29 @@ a, a:visited, a:hover, a:active {
     color: #000000;                /* Czarny kolor dla ceny */
     font-size: 1rem;
     color: #000000 !important;
+}
+.buy-button {
+    /* Usuwanie domyślnego wyglądu systemowego */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+    background-color: #1a1a1a; /* Głęboka czerń */
+    color: #ffffff !important;
+    border: 1px solid #1a1a1a; /* Cienka, czarna linia zamiast szarej ramki */
+    padding: 12px 25px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+.buy-button:hover {
+    background-color: #ffffff;
+    color: #1a1a1a !important;
 }
 .product-name {
     font-weight: normal !important; /* Brak pogrubienia */
@@ -337,7 +392,7 @@ a, a:visited, a:hover, a:active {
     .menu-toggle span { width: 25px; height: 3px; background: #333; }
     
     .nav-links {
-        display: none;
+        display: none !important;
         position: absolute;
         top: 100%; left: 0; width: 100%;
         background: white;
@@ -387,7 +442,219 @@ a, a:visited, a:hover, a:active {
         font-size: 0.7rem !important;
     }
     .nav-links.active { display: flex !important; }
+    
+    .cart-modal-content, #cart-modal {
+        width: 95% !important;
+        top: 5% !important;
+        max-height: 90vh !important;
+    }
 }
 .jodelka-fix {
     object-position: 20% center !important; /* Przesuwa kadr zdjęcia w prawo */
+}
+.order-section {
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #fcfcfc; /* Bardzo jasne tło */
+    border-radius: 10px;
+}
+
+.order-form {
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #4a3728; /* Twój brąz */
+}
+
+.form-group input, .form-group textarea {
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 0.9rem;
+}
+
+.form-group input[readonly] {
+    background-color: #eee;
+    color: #888;
+    cursor: not-allowed;
+}
+
+/* Stylizacja koszyka w nawigacji */
+.nav-links {
+    display: flex;
+    align-items: center;
+    list-style: none;
+}
+
+.cart-li {
+    margin-left: 10px; /* Subtelny odstęp od ostatniej zakładki */
+    display: flex;
+    align-items: center;
+}
+
+.cart-icon {
+    font-size: 1.2rem;
+}
+.cart-container {
+    position: relative; /* To pozwala licznikowi "trzymać się" ikony */
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px;
+}
+/* Ikona torby */
+.cart-icon svg {
+    display: block;
+    width: 22px; /* Możesz dopasować wielkość */
+    height: 22px;
+}
+
+.cart-badge {
+    position: absolute !important; /* Wymusza pozycjonowanie względem ikony */
+    top: -5px;      /* Przesuwa w górę */
+    right: -10px;   /* Przesuwa w prawo */
+    background-color: #1a1a1a; /* Czarny kolor kółeczka */
+    color: #ffffff !important;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: bold;
+    display: flex; /* Kluczowe dla centrowania cyfry w kółku */
+    justify-content: center;
+    align-items: center;
+    z-index: 10002; /* Musi być wyżej niż navbar (1001) */
+}
+/* Ukrywanie strzałek w polu ilości */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+}
+
+.quantity-controls input {
+    border: 1px solid #eee; /* Delikatna ramka ułatwia zrozumienie, że można tu pisać */
+    background: transparent;
+    font-family: 'Helvetica', sans-serif;
+    font-weight: bold;
+    outline: none;
+    width: 35px;
+    text-align: center;
+    margin: 0 5px;
+}
+/* Ujednolicenie czcionek we wszystkich polach formularza */
+input, 
+textarea, 
+select, 
+button {
+    font-family: 'Helvetica Neue', Arial, sans-serif !important; /* Taka sama czcionka jak w body */
+    font-size: 14px; /* Możesz dopasować rozmiar */
+    color: #4a3728; /* Kolor tekstu ze zdjęcia */
+}
+
+/* Ujednolicenie wyglądu wszystkich pól w koszyku */
+/* Ujednolicenie wyglądu wszystkich pól w koszyku */
+#checkout-form input, 
+#checkout-form textarea,
+#checkout-form select { /* Dodałem select, żeby lista dostawy też miała odstęp */
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px !important; /* To rozdziela pola */
+    border: 1px solid #ddd;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    display: block;
+}
+
+/* Styl dla napisu Adres do wysyłki wyciągniętego z kontenera */
+#checkout-form p {
+    margin-top: 15px; /* Odstęp od pola E-mail */
+    margin-bottom: 5px; /* Odstęp od pola tekstowego */
+}
+
+/* Upewnij się, że textarea nie ma zbędnych kontenerów psujących szerokość */
+#manual-address {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    display: block;
+    min-height: 80px;
+    resize: none;
+}
+#address-box input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+}
+
+#address-label {
+    display: block;
+    margin-bottom: 8px;
+}
+/* To stylizuje białe okno koszyka */
+.cart-modal-content, #cart-modal, .cart-popup-content { 
+    max-height: 85vh !important; /* Okno zajmie max 85% wysokości ekranu */
+    overflow-y: auto !important;  /* Włącza przewijanie góra-dół */
+    padding-right: 10px;         /* Miejsce na pasek przewijania */
+}
+
+/* Opcjonalnie: Stylizacja paska przewijania, żeby był ładny i cienki */
+.cart-modal-content::-webkit-scrollbar {
+    width: 5px;
+}
+.cart-modal-content::-webkit-scrollbar-thumb {
+    background-color: #800020; /* Bordowy kolor paska */
+    border-radius: 10px;
+}
+/* 1. GŁÓWNA NAPRAWA: Ograniczamy wysokość białego okna */
+.popup-content {
+    max-height: 85vh !important;    /* Zajmie max 85% wysokości ekranu */
+    overflow-y: auto !important;     /* Włączy przewijanie w środku */
+    display: block !important;       /* Zmieniamy z grid, żeby przewijanie działało poprawnie */
+    padding: 30px !important;
+    position: relative;
+}
+
+/* 2. NAPRAWA ZAMYKANIA: Upewniamy się, że X jest widoczny i działa */
+.close-popup {
+    position: sticky !important;    /* X nie ucieknie podczas przewijania */
+    top: 0;
+    right: 0;
+    float: right;                   /* Ustawi X w prawym górnym rogu */
+    z-index: 999;
+    background: white;
+    padding: 10px;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+/* 3. OPCJONALNIE: Ładniejszy pasek przewijania */
+.popup-content::-webkit-scrollbar {
+    width: 8px;
+}
+.popup-content::-webkit-scrollbar-thumb {
+    background: #8b8b8b;            /* Bordowy kolor paska */
+    border-radius: 10px;
 }
