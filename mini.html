@@ -4,10 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kolekcja instax MINI | Ustalmy Grawer</title>
+    <link rel="stylesheet" href="https://sdk.inpost.pl/geowidget/v4/geowidget.css">
+<script src="https://sdk.inpost.pl/geowidget/v4/geowidget.js" defer></script>
     <link rel="stylesheet" href="style.css">
-    <script src="https://geowidget.inpost.pl/sdk/for-javascript.js"></script>
-<link rel="stylesheet" href="https://geowidget.inpost.pl/sdk/for-javascript.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<script>
+    // Inicjalizacja zaraz po załadowaniu biblioteki
+    window.easyPackAsyncInit = function () {
+        easyPack.init({
+            defaultWidgetType: 'dot',
+            googleMapsApiKey: false
+        });
+        console.log("InPost zainicjowany w HTML");
+    };
+</script>
 <style>
     /* Poprawka odstępu dla wersji mobilnej */
     @media (max-width: 768px) {
@@ -139,105 +149,84 @@
         </div>
     </main>
 
-    <div id="cart-popup" class="popup-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
-    <div class="popup-content" style="background: white; padding: 40px; border-radius: 0; max-width: 850px; width: 95%; color: #1a1a1a; position: relative; font-family: 'Helvetica', sans-serif; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
-    
-        <span class="close-popup" onclick="toggleCart()" style="position: absolute; top: 15px; right: 20px; cursor: pointer; font-size: 28px; color: #999;">&times;</span>
+    <div id="cart-popup" class="popup-overlay">
+    <div class="popup-content">
+        <span class="close-popup" onclick="toggleCart()">&times;</span>
         
-        <h2 style="text-transform: uppercase; font-size: 1.1rem; letter-spacing: 3px; border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 25px; font-weight: 400;">Twój Koszyk</h2>
+        <h2 class="popup-title">Twój Koszyk</h2>
         
-        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px;">
-            
-            <div>
-                <div id="cart-items-list" style="margin-bottom: 30px; max-height: 250px; overflow-y: auto; padding-right: 10px;">
-                </div>
+        <div class="cart-grid">
+            <div class="cart-main">
+                <div id="cart-items-list"></div>
 
-                <p style="font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; border-top: 1px solid #eee; padding-top: 20px;">Dane do wysyłki:</p>
+                <p class="section-label">Dane do wysyłki:</p>
                 
-                <form action="https://formspree.io/f/mwvynybl" method="POST" id="checkout-form" style="display: flex; flex-direction: column; gap: 10px;">
-    <input type="hidden" name="_next" value="https://ustalmygrawer.github.io/ustalmygrawer/dziekujemy.html">                
-    <input type="hidden" name="Produkty" id="form-products">
-    <input type="hidden" name="Suma_Calkowita" id="form-total">
-    <input type="hidden" name="Zastosowany_Rabat" id="form-discount">
-    
-    <input type="text" name="name" placeholder="Imię i Nazwisko" required style="padding: 12px; border: 1px solid #ddd; font-size: 0.9rem;">
-    <input type="email" name="email" placeholder="E-mail" required style="padding: 12px; border: 1px solid #ddd; font-size: 0.9rem;">
-    
-    <div id="paczkomat-box" style="display: none; background: #f9f9f9; padding: 10px; border: 1px solid #eee;">
-    <label style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: #666;">Numer Paczkomatu:</label>
-    <input type="text" id="paczkomat-search" name="Nr_Paczkomatu" placeholder="Np. KRA01M" style="width: 100%; padding: 10px; border: 1px solid #1a1a1a; font-size: 0.9rem; margin-top: 5px;">
-    
-    <div style="margin-top: 10px; margin-bottom: 10px;">
-        <p style="font-size: 0.8rem; margin-bottom: 5px; color: #333;">Nie znasz kodu paczkomatu?</p>
-        <a href="https://inpost.pl/znajdz-paczkomat" target="_blank" 
-           style="text-decoration: underline !important; color: #666 !important; font-size: 0.8rem; font-weight: bold;">
-           KLIKNIJ TUTAJ, ABY ZNALEŹĆ SWÓJ PACZKOMAT
-        </a>
-    </div>
+                <form action="https://formspree.io/f/mwvynybl" method="POST" id="checkout-form">
+                    <input type="hidden" name="_next" value="https://ustalmygrawer.github.io/ustalmygrawer/dziekujemy.html">                
+                    <input type="hidden" name="Produkty" id="form-products">
+                    <input type="hidden" name="Suma_Calkowita" id="form-total">
+                    <input type="hidden" name="Zastosowany_Rabat" id="form-discount">
+                    
+                    <input type="text" name="name" placeholder="Imię i Nazwisko" required class="cart-input">
+                    <input type="email" name="email" placeholder="E-mail" required class="cart-input">
+                    
+                    <div id="paczkomat-box" class="sub-box">
+                        <label>Numer Paczkomatu:</label>
+                        <input type="text" id="paczkomat-search" name="Nr_Paczkomatu" placeholder="Np. KRA01M" class="cart-input">
+                        <button type="button" onclick="openInPostModal()" class="inpost-map-btn">Wybierz paczkomat z mapy</button>
 
-    <label style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: #666; margin-top: 10px; display: block;">Numer telefonu:</label>
-    <input type="tel" id="paczkomat-phone" name="Telefon_Paczkomat" placeholder="Dla powiadomień InPost" style="width: 100%; padding: 10px; border: 1px solid #ddd; font-size: 0.9rem; margin-top: 5px;">
-</div>
+                        <label>Numer telefonu:</label>
+                        <input type="tel" id="paczkomat-phone" name="Telefon_Paczkomat" placeholder="Dla powiadomień InPost" class="cart-input">
+                    </div>
 
-    <div id="address-box" style="display: none;"> 
-        <p id="address-label" style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: #666; margin-bottom: 10px; margin-top: 15px;">
-            Dane do wysyłki kurierem:
-        </p>
-        
-        <input type="text" name="street" id="street" placeholder="Ulica" style="padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; width: 100%; box-sizing: border-box;">
-        
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-            <input type="text" name="house_no" id="house_no" placeholder="Nr domu" style="width: 50%; padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; box-sizing: border-box;">
-            <input type="text" name="apt_no" id="apt_no" placeholder="Nr mieszkania" style="width: 50%; padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; box-sizing: border-box;">
-        </div>
-        
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-            <input type="text" name="zip" id="zip" placeholder="Kod pocztowy" style="width: 40%; padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; box-sizing: border-box;">
-            <input type="text" name="city" id="city" placeholder="Miejscowość" style="width: 60%; padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; box-sizing: border-box;">
-        </div>
-
-        <input type="tel" name="phone" id="customer-phone" placeholder="Numer telefonu dla kuriera" style="margin-top: 10px; padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; width: 100%; box-sizing: border-box;">
-    </div>
-
+                    <div id="address-box" class="sub-box" style="display: none;"> 
+                        <p class="section-label">Dane do wysyłki kurierem:</p>
+                        <input type="text" name="street" id="street" placeholder="Ulica" class="cart-input">
+                        <div class="input-row">
+                            <input type="text" name="house_no" id="house_no" placeholder="Nr domu" class="cart-input">
+                            <input type="text" name="apt_no" id="apt_no" placeholder="Nr mieszkania" class="cart-input">
+                        </div>
+                        <div class="input-row">
+                            <input type="text" name="zip" id="zip" placeholder="Kod pocztowy" class="cart-input">
+                            <input type="text" name="city" id="city" placeholder="Miejscowość" class="cart-input">
+                        </div>
+                        <input type="tel" name="phone" id="customer-phone" placeholder="Telefon dla kuriera" class="cart-input">
+                    </div>
+                </form>
             </div>
 
-            <div style="background: #fafafa; padding: 25px; border: 1px solid #eee; height: fit-content;">
-                <div style="margin-bottom: 25px;">
-                    <p style="font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Kod rabatowy</p>
-                    <div style="display: flex; gap: 0;">
-                        <input type="text" id="discount-code" placeholder="KOD" style="width: 60%; padding: 10px; border: 1px solid #ddd; border-right: none; font-size: 0.8rem; outline: none;">
-                        <button type="button" onclick="applyDiscount()" style="width: 40%; background: #1a1a1a; color: white; border: none; padding: 0 10px; cursor: pointer; font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px;">Aktywuj</button>
+            <div class="cart-summary">
+                <div class="promo-box">
+                    <p class="section-label">Kod rabatowy</p>
+                    <div class="promo-row">
+                        <input type="text" id="discount-code" placeholder="KOD">
+                        <button type="button" onclick="applyDiscount()">Aktywuj</button>
                     </div>
-                    <p id="discount-msg" style="font-size: 0.65rem; margin-top: 5px; min-height: 15px;"></p>
+                    <p id="discount-msg"></p>
                 </div>
 
-                <div style="margin-bottom: 20px;">
-                    <label style="font-size: 0.75rem; text-transform: uppercase; font-weight: bold; letter-spacing: 1px;">Dostawa:</label>
-<select id="shipping-method" onchange="checkShippingMethod()" style="padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 0.9rem; width: 100%;">
-    <option value="">Wybierz sposób dostawy...</option>
-    <option value="12">Paczkomat InPost — 12,00 zł</option>
-    <option value="20">Kurier InPost — 20,00 zł</option>
-</select>
+                <div class="shipping-select-box">
+                    <label class="section-label">Dostawa:</label>
+                    <select id="shipping-method" onchange="checkShippingMethod()" class="cart-input">
+                        <option value="">Wybierz sposób dostawy...</option>
+                        <option value="12">Paczkomat InPost — 12,00 zł</option>
+                        <option value="20">Kurier InPost — 20,00 zł</option>
+                    </select>
                 </div>
                 
-                <div style="display: flex; justify-content: space-between; align-items: baseline; font-size: 1.2rem; font-weight: bold; border-top: 1px solid #ddd; padding-top: 15px; margin-bottom: 20px;">
-                    <span style="font-size: 0.8rem; font-weight: normal; color: #666;">DO ZAPŁATY:</span>
+                <div class="total-row">
+                    <span>DO ZAPŁATY:</span>
                     <span id="cart-total">0,00 zł</span>
                 </div>
 
-                <div style="text-align: center; margin-bottom: 20px; border: 1px dashed #ccc; padding: 10px;">
-                    <p style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; color: #1a1a1a;">Płatność przelewem lub BLIK</p>
-                    <p style="font-size: 0.65rem; color: #666; line-height: 1.3;">
-                        To nie jest bramka płatnicza. Dane do wpłaty otrzymasz w podsumowaniu po złożeniu zamówienia.
-                    </p>
+                <div class="payment-info">
+                    <p>Płatność przelewem lub BLIK</p>
+                    <small>Dane do wpłaty otrzymasz w podsumowaniu.</small>
                 </div>
                 
-<button type="submit" form="checkout-form" class="checkout-btn" style="width: 100%; background: #1a1a1a; color: white; padding: 18px; border: none; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; cursor: pointer; font-size: 0.85rem;">
-    Złóż zamówienie
-</button>
+                <button type="submit" form="checkout-form" class="checkout-btn">Złóż zamówienie</button>
             </div>
         </div>
-    </form>
     </div>
 </div>
 

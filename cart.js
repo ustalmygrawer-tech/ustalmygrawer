@@ -381,21 +381,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
-// --- OBSŁUGA MAPY INPOST ---
-window.easyPackAsyncInit = function () {
+function openInPostModal() {
+    console.log("Próba otwarcia mapy...");
+    
+    if (typeof easyPack === 'undefined') {
+        console.error("Biblioteka easyPack nadal nie jest wczytana!");
+        alert("Twoja przeglądarka lub AdBlock blokuje skrypt InPostu. Wyłącz blokowanie reklam i odśwież stronę.");
+        return;
+    }
+
     easyPack.init({
         defaultWidgetType: 'dot',
-        googleMapsApiKey: false // Używa OpenStreetMap
+        googleMapsApiKey: false
     });
-};
 
-function openInPostModal() {
     easyPack.modalMap(function (point, modal) {
-        // Wpisuje numer paczkomatu do pola w formularzu
-        const searchInput = document.getElementById('paczkomat-search');
-        if (searchInput) {
-            searchInput.value = point.name;
-        }
+        document.getElementById('paczkomat-search').value = point.name;
         modal.close();
-    }, { width: 500, height: 600 });
+    }, {
+        width: 500,
+        height: 600
+    });
 }
