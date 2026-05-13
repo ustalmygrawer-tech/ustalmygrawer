@@ -208,23 +208,7 @@ function toggleCart() {
     }
 }
 // POWIĘKSZANIE ZDJĘĆ
-function openImage(src) {
-    const overlay = document.getElementById('image-overlay');
-    const overlayImg = document.getElementById('overlay-img');
-    if (overlay && overlayImg) {
-        overlayImg.src = src;
-        overlay.style.display = 'flex';
-        document.body.style.overflow = 'hidden'; // Blokujemy przewijanie strony pod spodem
-    }
-}
 
-function closeImage() {
-    const overlay = document.getElementById('image-overlay');
-    if (overlay) {
-        overlay.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Przywracamy przewijanie
-    }
-}
 // --- OBSŁUGA STRZAŁEK W SLIDERZE MOBILNYM ---
 // 1. ZMIENNA TRZYMAJĄCA AKTUALNY NUMER ZDJĘCIA
 let currentSlideIndex = 0;
@@ -397,3 +381,21 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+// --- OBSŁUGA MAPY INPOST ---
+window.easyPackAsyncInit = function () {
+    easyPack.init({
+        defaultWidgetType: 'dot',
+        googleMapsApiKey: false // Używa OpenStreetMap
+    });
+};
+
+function openInPostModal() {
+    easyPack.modalMap(function (point, modal) {
+        // Wpisuje numer paczkomatu do pola w formularzu
+        const searchInput = document.getElementById('paczkomat-search');
+        if (searchInput) {
+            searchInput.value = point.name;
+        }
+        modal.close();
+    }, { width: 500, height: 600 });
+}

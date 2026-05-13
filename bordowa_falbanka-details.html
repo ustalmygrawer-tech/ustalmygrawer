@@ -20,9 +20,10 @@
     
     <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
-    <li><a href="mini.html">instax MINI</a></li>
+    <li><a href="mini.html" class="active">instax MINI</a></li>
     <li><a href="square.html">instax SQUARE</a></li>
     <li><a href="wide.html">instax WIDE</a></li>
+    <li><a href="usg.html">USG</a></li>
     
     <!-- Sekcja ikon Social Media widoczna TYLKO w menu mobilnym -->
     <li class="mobile-only-socials">
@@ -51,59 +52,48 @@
     </li>
 </ul>
 </nav>
-<main class="content-wrapper"></main>
-   <div class="product-gallery-wrapper">
+<main class="content-wrapper">
+    <div class="product-gallery-wrapper">
+        <div class="product-gallery-grid mobile-swipe" id="productSlider">
+            <div class="main-photo">
+                <img src="bordowafalbanka1.jpg" class="zoomable" onclick="openFullImg(0)">
+            </div>
+            <div class="side-photo-item">
+                <img src="bordowafalbanka2.jpg" class="zoomable" onclick="openFullImg(1)">
+            </div>
+            <div class="side-photo-item">
+                <img src="bordowafalbanka3.jpg" class="zoomable" onclick="openFullImg(2)">
+            </div>
+        </div>
 
-    <div class="product-gallery-grid mobile-swipe" id="productSlider">
-        <div class="main-photo">
-            <img src="bordowafalbanka1.jpg" class="zoomable" onclick="openImage(this.src)">
-        </div>
-        <div class="side-photo-item">
-            <img src="bordowafalbanka2.jpg" class="zoomable" onclick="openImage(this.src)">
-        </div>
-        <div class="side-photo-item">
-            <img src="bordowafalbanka3.jpg" class="zoomable" onclick="openImage(this.src)">
+        <div class="slider-controls-overlay">
+            <button id="prevArrow" class="slider-arrow" onclick="moveSlider(-1)">&#10094;</button>
+            <button id="nextArrow" class="slider-arrow" onclick="moveSlider(1)">&#10095;</button>
         </div>
     </div>
 
-    <div class="slider-controls-overlay">
-        <button id="prevArrow" class="slider-arrow prev" onclick="moveSlider(-1)" style="display: none;">&#10094;</button>
-        <button id="nextArrow" class="slider-arrow next" onclick="moveSlider(1)">&#10095;</button>
-    </div>
 
-</div>
-
-    <div id="fullImgModal" class="modal">
-        <span class="close-btn" onclick="closeFullImg()">&times;</span>
-        <button class="modal-arrow prev" onclick="changeModalSlide(-1)">❮</button>
-        <img id="imgContainer" src="">
-        <button class="modal-arrow next" onclick="changeModalSlide(1)">❯</button>
-    </div>
-
+    <!-- Poniżej sekcja informacji o produkcie -->
     <div class="product-main-info">
         <div class="title-price-row">
             <h1 class="product-title">INSTAX MINI BORDOWA FALBANKA</h1>
             <span class="product-price">35,00 zł</span>
-            <button class="buy-button" 
-        onclick="addToCart('Bordowa Falbanka', 35, 'bordowafalbanka1.jpg')">
-    DODAJ DO KOSZYKA
-</button>
+            <button class="buy-button" onclick="addToCart('Bordowa Falbanka', 35, 'bordowafalbanka1.jpg')">
+                DODAJ DO KOSZYKA
+            </button>
         </div>
         
         <div class="product-description-full">
             <p>Postaw na kolor, który rządzi wnętrzami. Głęboki, nasycony odcień bordo dodaje wnętrzu elegancji i szlachetnego charakteru, idealnie podkreślając kolory Twoich zdjęć.
-System slide-in pozwala na wymianę zdjęcia w sekundę - po prostu wsuwasz fotografię od góry w szczelinę.
-Twoje wspomnienia zasługują na oprawę, która przyciąga spojrzenia!</p>
+            System slide-in pozwala na wymianę zdjęcia w sekundę - po prostu wsuwasz fotografię od góry w szczelinę.</p>
             <ul class="product-specs">
-    <li>Materiał: drewno, ręcznie malowane.</li>
-    <li>System: slide-in. Zdjęcie wsuwane jednym ruchem od góry.</li>
-    <li>Wymiary: 12.5 x 11 cm.</li>
-    <ul class="product-specs"></ul>
-</ul>
-    </form>
-</section>
+                <li>Materiał: drewno, ręcznie malowane.</li>
+                <li>System: slide-in. Zdjęcie wsuwane jednym ruchem od góry.</li>
+                <li>Wymiary: 12.5 x 11 cm.</li>
+            </ul>
         </div>
     </div>
+    
     <div class="related-products">
         <h3>Inne kolory:</h3>
         <div class="related-grid">
@@ -113,7 +103,7 @@ Twoje wspomnienia zasługują na oprawę, która przyciąga spojrzenia!</p>
             </a>
         </div>
     </div>
-
+</main>
     <div id="cart-popup" class="popup-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; justify-content: center; align-items: center;">
     <div class="popup-content" style="background: white; padding: 40px; border-radius: 0; max-width: 850px; width: 95%; color: #1a1a1a; position: relative; font-family: 'Helvetica', sans-serif; box-shadow: 0 20px 50px rgba(0,0,0,0.5);">
     
@@ -143,12 +133,10 @@ Twoje wspomnienia zasługują na oprawę, która przyciąga spojrzenia!</p>
     <input type="text" id="paczkomat-search" name="Nr_Paczkomatu" placeholder="Np. KRA01M" style="width: 100%; padding: 10px; border: 1px solid #1a1a1a; font-size: 0.9rem; margin-top: 5px;">
     
     <div style="margin-top: 10px; margin-bottom: 10px;">
-        <p style="font-size: 0.8rem; margin-bottom: 5px; color: #333;">Nie znasz kodu paczkomatu?</p>
-        <a href="https://inpost.pl/znajdz-paczkomat" target="_blank" 
-           style="text-decoration: underline !important; color: #666 !important; font-size: 0.8rem; font-weight: bold;">
-           KLIKNIJ TUTAJ, ABY ZNALEŹĆ SWÓJ PACZKOMAT
-        </a>
-    </div>
+    <button type="button" onclick="openInPostModal()" style="width: 100%; background: #ffcc00; color: black; border: none; padding: 10px; cursor: pointer; font-weight: bold; text-transform: uppercase; font-size: 0.75rem;">
+        Wybierz paczkomat z mapy
+    </button>
+</div>
 
     <label style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: #666; margin-top: 10px; display: block;">Numer telefonu:</label>
     <input type="tel" id="paczkomat-phone" name="Telefon_Paczkomat" placeholder="Dla powiadomień InPost" style="width: 100%; padding: 10px; border: 1px solid #ddd; font-size: 0.9rem; margin-top: 5px;">
@@ -173,7 +161,7 @@ Twoje wspomnienia zasługują na oprawę, która przyciąga spojrzenia!</p>
 
         <input type="tel" name="phone" id="customer-phone" placeholder="Numer telefonu dla kuriera" style="margin-top: 10px; padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; width: 100%; box-sizing: border-box;">
     </div>
-</form>
+
             </div>
 
             <div style="background: #fafafa; padding: 25px; border: 1px solid #eee; height: fit-content;">
@@ -193,8 +181,6 @@ Twoje wspomnienia zasługują na oprawę, która przyciąga spojrzenia!</p>
     <option value="12">Paczkomat InPost — 12,00 zł</option>
     <option value="20">Kurier InPost — 20,00 zł</option>
 </select>
-
-
                 </div>
                 
                 <div style="display: flex; justify-content: space-between; align-items: baseline; font-size: 1.2rem; font-weight: bold; border-top: 1px solid #ddd; padding-top: 15px; margin-bottom: 20px;">
@@ -216,21 +202,40 @@ Twoje wspomnienia zasługują na oprawę, która przyciąga spojrzenia!</p>
         </div>
     </div>
 </div>
+
 <script>
-        const galleryImages = ["bordowafalbanka1.jpg", "bordowafalbanka2.jpg", "bordowafalbanka3.jpg"];
-        function openFullImg(index) {
+   // Upewnij się, że tablica ma poprawne nazwy plików!
+// Tablica ze zdjęciami - upewnij się, że nazwy są identyczne jak pliki!
+const galleryImages = [
+    "bordowafalbanka1.jpg", 
+    "bordowafalbanka2.jpg", 
+    "bordowafalbanka3.jpg"
+];
+
+function openFullImg(index) {
     const modal = document.getElementById("imgModal");
     const container = document.getElementById("imgContainer");
     
     if (modal && container) {
-        currentImgIndex = index;
         container.src = galleryImages[index];
         modal.style.display = "flex";
+        document.body.style.overflow = "hidden"; // Blokada przewijania tła
     }
 }
-    </script>
+
+function closeFullImg() {
+    const modal = document.getElementById("imgModal");
+    const container = document.getElementById("imgContainer");
+    
+    if (modal) {
+        modal.style.display = "none";
+        container.src = ""; // Czyścimy źródło, żeby nie było 'ducha'
+        document.body.style.overflow = "auto"; // Przywracamy przewijanie
+    }
+}
+</script>
     <script src="cart.js"></script>
-</main>
+
 <footer class="site-footer">
         <div class="footer-scallop"></div>
     <div class="footer-container">
@@ -295,5 +300,10 @@ Twoje wspomnienia zasługują na oprawę, która przyciąga spojrzenia!</p>
     easing: 'ease-in-out',
   });
 </script>
+<!-- Modal do powiększania zdjęć -->
+<div id="imgModal" class="popup-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 99999; justify-content: center; align-items: center;" onclick="closeFullImg()">
+    <span class="close-btn" style="position: absolute; top: 20px; right: 30px; color: white; font-size: 40px; cursor: pointer;">&times;</span>
+    <img id="imgContainer" src="" style="max-width: 90%; max-height: 90%; object-fit: contain; border: none;">
+</div>
 </body>
 </html>

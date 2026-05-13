@@ -44,10 +44,11 @@
     </div>
     
     <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html" class="active">Home</a></li>
     <li><a href="mini.html">instax MINI</a></li>
     <li><a href="square.html">instax SQUARE</a></li>
     <li><a href="wide.html">instax WIDE</a></li>
+    <li><a href="usg.html">USG</a></li>
     
     <!-- Sekcja ikon Social Media widoczna TYLKO w menu mobilnym -->
     <li class="mobile-only-socials">
@@ -108,7 +109,7 @@
 <p class="section-subtitle" data-aos="fade-down" data-aos-delay="200">Dopasuj ramkę do swojej ulubionej odbitki</p>
 
         <div class="category-grid">
-            <a href="kolekcja-mini.html" class="category-card" data-aos="fade-up" data-aos-delay="100">
+            <a href="mini.html" class="category-card" data-aos="fade-up" data-aos-delay="100">
                 <div class="category-image">
                     <img src="bordowafalbanka2.jpg" alt="Instax Mini">
                 </div>
@@ -118,7 +119,7 @@
                 </div>
             </a>
 
-            <a href="kolekcja-square.html" class="category-card" data-aos="fade-up" data-aos-delay="200">
+            <a href="square.html" class="category-card" data-aos="fade-up" data-aos-delay="200">
                 <div class="category-image">
                     <img src="mokka_classy.jpg" alt="Instax Square">
                 </div>
@@ -128,7 +129,7 @@
                 </div>
             </a>
 
-            <a href="kolekcja-wide.html" class="category-card" data-aos="fade-up" data-aos-delay="300">
+            <a href="wide.html" class="category-card" data-aos="fade-up" data-aos-delay="300">
                 <div class="category-image">
                     <img src="jodełka1.jpg" alt="Instax Wide">
                 </div>
@@ -138,7 +139,7 @@
                 </div>
             </a>
 
-            <a href="kolekcja-usg.html" class="category-card" data-aos="fade-up" data-aos-delay="400">
+            <a href="usg.html" class="category-card" data-aos="fade-up" data-aos-delay="400">
                 <div class="category-image">
                     <img src="USG1.JPG" alt="Ramki USG">
                 </div>
@@ -254,6 +255,7 @@
     <div id="paczkomat-box" style="display: none; background: #f9f9f9; padding: 10px; border: 1px solid #eee;">
     <label style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: #666;">Numer Paczkomatu:</label>
     <input type="text" id="paczkomat-search" name="Nr_Paczkomatu" placeholder="Np. KRA01M" style="width: 100%; padding: 10px; border: 1px solid #1a1a1a; font-size: 0.9rem; margin-top: 5px;">
+    
     <div style="margin-top: 10px; margin-bottom: 10px;">
         <p style="font-size: 0.8rem; margin-bottom: 5px; color: #333;">Nie znasz kodu paczkomatu?</p>
         <a href="https://inpost.pl/znajdz-paczkomat" target="_blank" 
@@ -261,6 +263,7 @@
            KLIKNIJ TUTAJ, ABY ZNALEŹĆ SWÓJ PACZKOMAT
         </a>
     </div>
+
     <label style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: #666; margin-top: 10px; display: block;">Numer telefonu:</label>
     <input type="tel" id="paczkomat-phone" name="Telefon_Paczkomat" placeholder="Dla powiadomień InPost" style="width: 100%; padding: 10px; border: 1px solid #ddd; font-size: 0.9rem; margin-top: 5px;">
 </div>
@@ -284,7 +287,7 @@
 
         <input type="tel" name="phone" id="customer-phone" placeholder="Numer telefonu dla kuriera" style="margin-top: 10px; padding: 12px; border: 1px solid #ddd; font-size: 0.9rem; width: 100%; box-sizing: border-box;">
     </div>
-</form>
+
             </div>
 
             <div style="background: #fafafa; padding: 25px; border: 1px solid #eee; height: fit-content;">
@@ -323,8 +326,10 @@
 </button>
             </div>
         </div>
+    </form>
     </div>
 </div>
+
 <script>
         const galleryImages = ["bordowafalbanka1.jpg", "bordowafalbanka2.jpg", "bordowafalbanka3.jpg"];
         function openFullImg(index) {
