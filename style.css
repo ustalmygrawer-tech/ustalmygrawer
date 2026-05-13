@@ -1,4 +1,15 @@
 /* --- 1. PODSTAWOWE USTAWIENIA (RESET) --- */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Wymusza wysokość równą wysokości okna */
+}
 * { 
     margin: 0; 
     padding: 0; 
@@ -7,7 +18,7 @@
 
 body { 
     font-family: 'Helvetica Neue', Arial, sans-serif; 
-    background-color: #f4f8fb; 
+    background-color: #ffffff; 
     color: #4a3728;
     overflow-x: hidden; 
     width: 100%;
@@ -47,7 +58,24 @@ body {
 
 .nav-links a:hover { color: #800020; }
 
+
+/* --- DODANIE FALBANKI DO NAWIGACJI --- */
+
+.navbar {
+    position: relative;
+    background-color: #f6f2e9;
+    /* Większy padding na dole, aby napisy miały oddech przed falą */
+    padding-bottom: 0px !important; 
+    z-index: 1001;
+    /* Usuwamy ewentualne cienie, które mogłyby psuć efekt fali */
+    box-shadow: none !important;
+}
+
+
+
+
 /* --- 3. STRONA GŁÓWNA & HOTSPOTY --- */
+/* To jest początek komentarza - wszystko poniżej jest wyłączone
 .home-container {
     width: 100%;
     position: relative;
@@ -106,8 +134,8 @@ body {
     width: 500px; height: 83px; left: 77.5%; border-radius: 40px; transform: translateX(-50%);
 }
 .contact-phone { top: 92.2%; }
-.contact-email { top: 96%; }
-
+.contact-email { top: 96%; } 
+To jest koniec komentarza*/
 /* --- 4. LISTA PRODUKTÓW (SKLEP) --- */
 .products-section { padding: 120px 50px; text-align: center; }
 
@@ -607,6 +635,7 @@ button {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     font-size: 0.9rem;
     box-sizing: border-box;
+    margin-bottom: 15px !important;
 }
 
 #address-label {
@@ -657,4 +686,1965 @@ button {
 .popup-content::-webkit-scrollbar-thumb {
     background: #8b8b8b;            /* Bordowy kolor paska */
     border-radius: 10px;
+}
+.quantity-controls input, 
+.quantity-input {
+    pointer-events: auto !important; /* Pozwala klikać w pole */
+    cursor: text !important;         /* Zmienia kursor na tekstowy */
+    background: white !important;    /* Upewnia się, że nie wygląda na zablokowane */
+}
+/* --- STYLIZACJA STRZAŁEK SLIDERA (TYLKO MOBILE) --- */
+@media (max-width: 768px) {
+    /* Nowy główny rodzic - stoi w miejscu i trzyma strzałki */
+    .product-gallery-wrapper {
+        position: relative;
+        width: 100%;
+        margin: 0 auto;
+        overflow: visible; /* Nie ucinamy niczego */
+    }
+
+    /* Kontener na zdjęcia (Twoje mobile-swipe) */
+    .product-gallery-grid.mobile-swipe {
+        display: flex;
+        overflow-x: auto; /* Pozwala na przewijanie */
+        scroll-snap-type: x mandatory; /* Zdjęcia przeskakują równo */
+        -webkit-overflow-scrolling: touch; /* Płynne przewijanie na iOS */
+        pointer-events: auto; /* Reaguje na swipe */
+    }
+
+    /* Wygląd pojedynczego zdjęcia - naprawia 'ucięcie' */
+    .main-photo, 
+    .side-photo-item {
+        flex: 0 0 100%; /* Każde zdjęcie zajmuje pełną szerokość */
+        scroll-snap-align: center; /* Zdjęcia centrowane po przeskoku */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .product-gallery-grid img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+    }
+
+    /* Kontener-nakładka na strzałki - stoi w miejscu nad sliderem */
+    .slider-controls-overlay {
+        position: absolute; /* Przypięty do .product-gallery-wrapper */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none; /* Domyślnie ignoruje kliknięcia, żeby swipe działał */
+        z-index: 999;
+    }
+
+    /* Wspólny styl dla strzałek - naprawia ich działanie */
+    .slider-arrow {
+        position: absolute;
+        bottom: 50px; /* Wysokość od dołu zdjęcia (jak w Loreve) */
+        background: rgba(255, 255, 255, 0.8);
+        border: none;
+        width: 44px; /* Duży obszar dla palca */
+        height: 44px;
+        border-radius: 50%;
+        color: #333;
+        font-size: 20px;
+        font-weight: bold;
+        display: flex; /* Centrowanie znaku inside */
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        cursor: pointer;
+        pointer-events: auto; /* Wymusza reagowanie na kliknięcie */
+    }
+
+    /* --- ASYMETRYCZNY UKŁAD STRZAŁEK (jak Loreve) --- */
+    
+    /* Prawa strzałka stoi standardowo blisko prawej */
+    .slider-arrow.next {
+        right: 15px; 
+    }
+
+    /* Lewa strzałka przeniesiona bliżej prawej, z marginesem */
+    .slider-arrow.prev {
+        right: 15px; /* Odległość od PRAWEJ krawędzi (right + szerokość strzałki + margines) */
+        /*left: auto;*/ /* Kasujemy lewą pozycję */
+    }
+}
+/* --- OSTATECZNA NAPRAWA KOSZYKA MOBILE --- */
+@media (max-width: 768px) {
+    
+    /* 1. Rozciągamy białe okno na całą szerokość i pozwalamy mu rosnąć w dół */
+    #cart-popup > div, 
+    .popup-content, 
+    .cart-popup-content {
+        width: 95% !important;         /* Prawie cała szerokość ekranu */
+        max-width: 95% !important;
+        height: auto !important;        /* Wysokość zależy od treści */
+        max-height: 90vh !important;    /* Nie więcej niż 90% ekranu */
+        display: block !important;      /* Kluczowe: wyłączamy kolumny */
+        padding: 40px 15px 20px 15px !important; /* Więcej miejsca na górze dla X */
+        overflow-y: auto !important;    /* Włączamy przewijanie */
+        margin: auto !important;
+    }
+
+    /* 2. Formularze, dane do wysyłki i produkty - wszystko pod sobą */
+    .cart-grid, 
+    .cart-content, 
+    .cart-wrapper,
+    .cart-content-wrapper {
+        display: block !important;      /* Wymuszamy układ pionowy */
+    }
+
+    /* 3. Naprawa uciętych sekcji (Dostawa, Podsumowanie) */
+    .cart-left, 
+    .cart-right, 
+    .shipping-section, 
+    .summary-section {
+        width: 100% !important;         /* Każda sekcja zajmuje pełną szerokość */
+        display: block !important;
+        float: none !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* 4. Przyciski i pola tekstowe - żeby nie wystawały */
+    input[type="text"], 
+    input[type="email"], 
+    select, 
+    .checkout-btn, 
+    .coupon-section button {
+        width: 100% !important;         /* Szerokość dopasowana do okna */
+        box-sizing: border-box !important; /* Liczy szerokość razem z paddingiem */
+        height: 45px !important;
+        margin: 5px 0 15px 0 !important;
+    }
+
+    /* 5. Przycisk "ZŁÓŻ ZAMÓWIENIE" - pełna widoczność */
+    .checkout-btn {
+        display: block !important;
+        background-color: #000 !important;
+        color: #fff !important;
+        padding: 15px !important;
+        font-size: 18px !important;
+        height: auto !important;        /* Żeby tekst się nie uciął */
+    }
+
+    /* 6. Przycisk zamknięcia (X) w prawym górnym rogu */
+    .close-popup {
+        position: absolute !important;  
+        top: 10px !important;
+        right: 10px !important;
+        font-size: 30px !important;
+        line-height: 1 !important;
+        z-index: 1002 !important;
+    }
+}
+
+/* --- UKRYWANIE STRZAŁEK NA DESKTOPIE (Dla pewności) --- */
+@media (min-width: 769px) {
+    .slider-arrow {
+        display: none !important;
+    }
+}
+/* STYL SEKCJI HERO */
+.hero-section {
+    background-color: #f6f2e9;
+    position: relative;
+    overflow: visible !important; /* To musi być visible! */
+    z-index: 1; /* Niska warstwa dla tła i zdjęcia */
+    margin-top: 60px !important;
+}
+
+/* 2. FALBANKA JAKO NIEZALEŻNA WARSTWA NA WIERZCHU */
+.navbar::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -39px; /* Dokładnie tyle, ile wynosi wysokość fali */
+    width: 100%;
+    height: 40px; /* Wysokość Twoich łuków */
+    background-color: #e7e4d5; /* Twój kolor nawigacji */
+    
+    /* Maska, która wycina idealne ząbki */
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0,0 v10 Q5,20 10,10 T20,10 T30,10 T40,10 T50,10 T60,10 T70,10 T80,10 T90,10 T100,10 v-10 Z' /%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0,0 v10 Q5,20 10,10 T20,10 T30,10 T40,10 T50,10 T60,10 T70,10 T80,10 T90,10 T100,10 v-10 Z' /%3E%3C/svg%3E");
+    
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+
+    z-index: 9999 !important;
+    pointer-events: none;
+}
+
+/* 3. UPEWNIJ SIĘ, ŻE NAVBAR NIE UCINA DZIECI */
+.navbar {
+    position: relative;
+    overflow: visible !important;
+    background-color: #e7e4d5; /* Ustaw ten sam kolor co falbanka */
+}
+.hero-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: row-reverse; /* KLUCZ: Zamienia zdjęcie z tekstem miejscami */
+    align-items: center;
+    gap: 80px;
+    padding: 0 50px;
+}
+
+/* Tekstowa strona po prawej */
+.hero-content {
+    flex: 1;
+    text-align: left;
+}
+
+.hero-subtitle {
+    color: #800020; /* Twój bordowy */
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 14px;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.hero-content h1 {
+    font-family: 'Playfair Display', serif; /* Elegancki font szeryfowy */
+    font-size: 48px;
+    color: #333;
+    line-height: 1.2;
+    margin-bottom: 20px;
+}
+/*Stwórz unikalną oprawę... */
+.hero-content p {
+    font-size: 18px;
+    color: #3c0000;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+/* --- POPRAWA PRZYCISKÓW (LAPTOP) --- */
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    margin-top: 35px;
+}
+
+.btn-primary, .btn-secondary {
+    padding: 18px 40px; /* Nieco większe na laptopie */
+    border-radius: 50px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    min-width: 200px; /* Spójna szerokość na większym ekranie */
+}
+
+.btn-primary {
+    background-color: #3c0000 !important;
+    color: #ffffff !important;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #5a0000 !important;
+    transform: translateY(-3px);
+}
+
+.btn-secondary {
+    border: 2px solid #3c0000 !important;
+    color: #3c0000 !important;
+    background: transparent;
+}
+
+.btn-secondary:hover {
+    background-color: #3c0000;
+    color: #ffffff !important;
+    transform: translateY(-3px);
+}
+/* Zdjęcie po lewej */
+.hero-image {
+    flex: 1.2; /* Dajemy zdjęciu nieco więcej przestrzeni */
+}
+
+.hero-image img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1; /* Zachowujemy ten super kwadrat z mobile */
+    object-fit: cover;
+    border-radius: 30px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+}
+
+/* SEKCJA KATEGORII */
+.categories-section {
+    padding: 80px 20px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.section-subtitle {
+    font-size: 16px;
+    color: #888;
+    margin-bottom: 50px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Siatka kategorii */
+.category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Karta kategorii */
+.category-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-10px);
+}
+
+.category-image {
+    width: 100%;
+    aspect-ratio: 1 / 1; /* Kwadratowe zdjęcia */
+    overflow: hidden;
+    border-radius: 15px; /* Zaokrąglone rogi jak w inspiracji */
+    background-color: #f9f9f9;
+    margin-bottom: 15px;
+}
+
+.category-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s ease;
+}
+
+.category-card:hover .category-image img {
+    scale: 1.1;
+}
+
+.category-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.category-info span {
+    font-size: 14px;
+    color: #800020; /* Twój bordowy */
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Wyróżnienie karty USG */
+.special-card .category-info span {
+    color: #b5838d; /* Subtelniejszy kolor dla pamiątek dziecięcych */
+}
+
+@media (max-width: 768px) {
+    .category-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* Dwie równe kolumny */
+        gap: 15px !important;            /* Mniejszy odstęp, żeby kafle były większe */
+        padding: 0 15px !important;      /* Odstęp od krawędzi ekranu */
+    }
+
+    /* 2. Dopasowanie wielkości tekstów w kafelkach */
+    .category-info h3 {
+        font-size: 16px !important;      /* Mniejszy tytuł kategorii */
+        margin-top: 10px !important;
+    }
+
+    .category-info span {
+        font-size: 11px !important;      /* Mniejszy napis pod spodem */
+        letter-spacing: 0.5px !important;
+    }
+
+    /* 3. Upewniamy się, że obrazki zachowują proporcje */
+    .category-image {
+        margin-bottom: 8px !important;
+        border-radius: 12px !important;  /* Nieco mniejszy promień dla mniejszych kafli */
+    }
+}
+/* --- KOMPLETNA NAWIGACJA MOBILNA Z FALBANKĄ --- */
+@media (max-width: 768px) {
+    /* WYMUSZAMY STAŁY PASEK */
+    /* Blokujemy nawigację na górze */
+    .navbar {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 65px !important;
+        z-index: 999999 !important; /* Maksymalna wartość */
+        
+        /* Wymuszenie stabilności w mobilnych przeglądarkach */
+        transform: translateZ(0) !important;
+        -webkit-transform: translateZ(0) !important;
+        will-change: transform;
+        
+        background-color: #e7e4d5 !important;
+    }
+    /* TRZY KRESKI - NAPRAWA WIDOCZNOŚCI */
+    .menu-toggle {
+        display: flex !important;
+        flex-direction: column;
+        justify-content: space-around;
+        width: 30px;
+        height: 24px;
+        margin-right: 15px;
+        z-index: 100000 !important; /* Wyżej niż navbar! */
+        cursor: pointer;
+        position: relative;
+    }
+
+    /* Rysujemy kreski od nowa, żeby mieć pewność, że są widoczne */
+    .menu-toggle span {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background-color: #333 !important; /* Ciemne kreski */
+        border-radius: 2px;
+    }
+
+    /* FALBANKA - DOCIŚNIĘTA */
+    .navbar::after {
+        content: "" !important;
+        position: absolute !important;
+        bottom: -24px !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 25px !important;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath fill='%23e7e4d5' d='M0,0 L0,10 Q10,20 20,10 L20,0 Z'/%3E%3C/svg%3E") !important;
+        background-repeat: repeat-x !important;
+        background-size: 60px 25px !important;
+        z-index: 99999 !important;
+        pointer-events: none;
+    }
+
+    /* Żeby treść nie chowała się pod pasek */
+    
+html, body {
+    /* Fixed nie działa poprawnie, jeśli rodzic ma overflow: hidden */
+    overflow-x: hidden !important; 
+    overflow-y: visible !important; 
+    height: auto !important;
+    position: relative !important;
+}
+
+/* Upewnij się, że żaden kontener typu "wrapper" lub "page-content" nie ma:
+   overflow: hidden; 
+   Jeśli taki masz, dodaj mu: overflow: visible !important; */
+} /* <--- TO JEST TEN NAWIAS, który zamyka całe @media. Musi tu być! */
+/* --- ZBIORCZA POPRAWKA SEKCJI HERO (MOBILE) --- */
+@media (max-width: 768px) {
+    /* 1. UKŁAD KONTENERA (ZDJĘCIE NAD TEKSTEM) */
+    .hero-container {
+        flex-direction: column !important; 
+        text-align: center !important;   
+        gap: 30px !important;            
+        padding: 0 20px !important;      
+    }
+
+    /* 2. POWIĘKSZONE KWADRATOWE ZDJĘCIE */
+    .hero-image {
+        width: 100% !important; 
+        max-width: 400px !important; 
+        margin: 0 auto !important;   
+    }
+
+    .hero-image img {
+        width: 100% !important;
+        height: auto !important;    
+        aspect-ratio: 1 / 1 !important; 
+        object-fit: cover !important;  
+        border-radius: 20px !important;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    /* 3. DOPASOWANIE TEKSTU I PRZYCISKÓW */
+    .hero-content {
+        width: 100% !important;
+        padding-top: 10px !important;
+    }
+
+    .hero-buttons {
+        display: flex !important;
+        flex-direction: row !important;  /* Przyciski obok siebie */
+        flex-wrap: wrap !important;      /* Zawijanie na małych ekranach */
+        justify-content: center !important; /* Środkowanie grupy */
+        align-items: center !important;
+        gap: 12px !important;            
+        margin-top: 25px !important;
+    }
+
+    /* 4. SYMETRYCZNE I JASNE PRZYCISKI */
+    .btn-primary, 
+    .btn-primary:visited,
+    .btn-primary:hover {
+        background-color: #3c0000 !important;
+        color: #ffffff !important; /* Jasny napis */
+        padding: 14px 25px !important;
+        min-width: 160px !important;
+        font-size: 15px !important;
+        border-radius: 50px !important;
+        display: inline-flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-decoration: none !important;
+    }
+
+    .btn-secondary {
+        border: 2px solid #3c0000 !important;
+        color: #3c0000 !important; /* Ciemny napis dla kontrastu */
+        padding: 14px 25px !important;
+        min-width: 160px !important;
+        font-size: 15px !important;
+        border-radius: 50px !important;
+        display: inline-flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-decoration: none !important;
+    }
+}
+/* 1. NAPRAWA KOLORU TEKSTU W PRZYCISKACH (Nadpisuje reset) */
+.btn-primary, 
+.btn-primary:visited {
+    color: #ffffff !important; /* Wymuszamy biel dla bordowego przycisku */
+}
+
+.btn-secondary, 
+.btn-secondary:visited {
+    color: #3c0000 !important; /* Wymuszamy bordo dla przycisku z ramką */
+}
+
+.btn-secondary:hover {
+    color: #ffffff !important; /* Przy najechaniu tekst staje się biały */
+}
+
+/* 2. DOPRECYZOWANIE UKŁADU HERO NA LAPTOPIE */
+@media (min-width: 769px) {
+    .hero-container {
+        display: flex;
+        flex-direction: row-reverse; /* Zdjęcie ląduje po lewej, tekst po prawej */
+        justify-content: space-between;
+        align-items: center;
+        gap: 60px;
+        padding: 60px 5%;
+    }
+
+    .hero-image {
+        flex: 1;
+    }
+
+    .hero-content {
+        flex: 1;
+        text-align: left; /* Tekst wyrównany do lewej przy zdjęciu */
+    }
+
+    .hero-image img {
+        width: 100%;
+        max-width: 550px;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        border-radius: 30px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+    }
+
+    /* Wyśrodkowanie przycisków względem tekstu po prawej */
+    .hero-buttons {
+        justify-content: flex-start; 
+    }
+}
+
+/* 3. POPRAWKA DLA MOBILNYCH (żeby tam tekst został wyśrodkowany) */
+@media (max-width: 768px) {
+    .hero-container {
+        flex-direction: column; /* Na mobile zdjęcie nad tekstem */
+        text-align: center;
+    }
+    .hero-content {
+        text-align: center;
+    }
+    .hero-buttons {
+        flex-direction: column; /* Przyciski jeden pod drugim na telefonie */
+        align-items: center;
+    }
+}
+
+
+/* Adaptacja dla Mobile */
+@media (max-width: 768px) {
+    .footer-container {
+        text-align: center;
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-brand {
+        margin-bottom: 20px;
+    }
+}
+/* --- STRONA KONTAKT --- */
+.contact-page {
+    padding-top: 50px;
+    background-color: #fff;
+}
+
+/* Ustawienie kontenera, by zdjęcie i info startowały od samej góry */
+.contact-header-container {
+    display: flex;
+    align-items: flex-start; /* Ważne: tekst wyrówna się do góry zdjęcia */
+    gap: 50px;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Zdjęcie po lewej */
+.contact-image {
+    flex: 1;
+    position: sticky; /* Opcjonalnie: zdjęcie będzie "jechać" za scrollowanym formularzem */
+    top: 20px;
+}
+
+.contact-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+/* Kolumna z tekstem i formularzem po prawej */
+.contact-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-info h2 {
+    margin-top: 0; /* Podciąga napis KONTAKT do samej góry */
+    font-size: 32px;
+}
+
+.contact-form-sidebar {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid #eee; /* Delikatna linia oddzielająca dane od formularza */
+}
+
+.contact-form-sidebar h3 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Stylizacja pól formularza, by były zgrabniejsze */
+.form-group input, .form-group textarea {
+    background-color: #fcfcfc;
+    border: 1px solid #e0e0e0;
+    margin-bottom: 15px;
+}
+
+.email-link {
+    display: block;
+    font-size: 18px;
+    color: #4a3728; /* Twój brąz */
+    text-decoration: none;
+    margin: 10px 0 25px 0;
+    font-weight: 500;
+}
+
+.social-icons {
+    display: flex;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.social-icons img {
+    width: 25px;
+    opacity: 0.8;
+}
+
+/* Sekcja Formularza */
+.contact-form-section {
+    max-width: 800px;
+    margin: 80px auto;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.contact-form-section h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+#contact-form {
+    margin-top: 40px;
+    text-align: left;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-group input, .form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #eee;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.btn-submit {
+    background-color: #4a0404;
+    color: white;
+    padding: 12px 30px; /* Nieco mniejszy, by pasował do kolumny */
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    transition: 0.3s;
+    display: inline-block; /* Przycisk nie będzie na całą szerokość */
+    width: auto; 
+}
+
+.btn-submit:hover {
+    background-color: #800020;
+    transform: translateY(-2px);
+}
+
+.company-footer-details {
+    text-align: center;
+    padding: 40px;
+    font-size: 13px;
+    color: #999;
+    border-top: 1px solid #eee;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+    .contact-header-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    .contact-info {
+        text-align: center;
+    }
+    .social-icons {
+        justify-content: center;
+    }
+}
+/* --- POPRAWKA DLA TELEFONÓW (Wersja Mobilna) KONTAKT --- */
+@media (max-width: 768px) {
+    
+    /* 1. Ustawiamy główne pudełko w pionie i dajemy mu Flex */
+    .contact-header-container {
+        display: flex;
+        flex-direction: column !important; /* Wszystko jedno pod drugim */
+        gap: 30px !important;
+        padding: 10px !important;
+        align-items: center !important;
+    }
+
+    /* 2. Zmieniamy kolejność: info i formularz będą na górze */
+    .contact-info {
+        order: 1 !important; /* Ten element wyświetli się jako PIERWSZY */
+        width: 100% !important;
+        text-align: center !important;
+    }
+
+    /* 3. Zmieniamy kolejność: zdjęcie będzie na dole */
+    .contact-image {
+        order: 2 !important; /* Ten element wyświetli się jako DRUGI */
+        width: 100% !important;
+        position: relative !important; /* Upewniamy się, że nie 'sticky' */
+        top: 0 !important;
+        margin-top: 40px !important; /* Odstęp od formularza */
+    }
+
+    .contact-image img {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+    /* Pozostałe poprawki dla estetyki na mobile */
+    .social-icons {
+        justify-content: center !important;
+    }
+
+    .contact-form-sidebar {
+        margin-top: 30px !important;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+    }
+
+    .btn-submit {
+        width: 100% !important;
+    }
+}
+.product-card img {
+    transition: transform 0.5s ease, filter 0.5s ease; /* Płynność */
+}
+
+.product-card img:hover {
+    transform: scale(1.05); /* Powiększenie o 5% */
+    filter: brightness(1.1); /* Lekkie rozjaśnienie */
+}
+/* GŁÓWNY KONTENER HERO */
+.hero-clean-layout {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+
+/* SLIDER Z FALĄ U DOŁU */
+.hero-image-slider {
+    flex: 1;
+    height: 500px;
+    position: relative;
+    border-radius: 30px; /* Klasyczne zaokrąglenie wszystkich rogów */
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Delikatny cień dla elegancji */
+}
+
+.slide-item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    animation: crossfadeFast 12s infinite;
+}
+
+/* Opóźnienia dla zdjęć (4s na każde) */
+.slide-item:nth-child(1) { animation-delay: 0s; }
+.slide-item:nth-child(2) { animation-delay: 4s; }
+.slide-item:nth-child(3) { animation-delay: 8s; }
+
+@keyframes crossfadeFast {
+    0% { opacity: 0; }
+    5% { opacity: 1; }
+    33% { opacity: 1; }
+    38% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* TEKST PO PRAWEJ */
+.hero-text-content {
+    flex: 1;
+    text-align: left;
+}
+
+.top-label {
+    color: #4a0404;
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-size: 14px;
+}
+
+.hero-text-content h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    color: #333;
+    margin: 15px 0;
+}
+
+.hero-text-content p {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 30px;
+}
+
+/* PRZYCISKI */
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-primary {
+    background-color: #4a0404;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.btn-secondary {
+    border: 2px solid #4a0404;
+    color: #4a0404;
+    padding: 13px 30px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .hero-container {
+        flex-direction: column;
+        text-align: center;
+    }
+    .hero-text-content {
+        order: 1;
+    }
+    .hero-image-slider {
+        order: 2;
+        width: 100%;
+        height: 350px;
+    }
+    .hero-buttons {
+        justify-content: center;
+    }
+}
+.wave-divider {
+    width: 100%;
+    line-height: 0;
+    margin-top: -1px; /* Eliminuje białą szparkę */
+}
+
+.wave-divider svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+/* --- 1. NAPRAWA STRONY KONTAKT (Wersja Mobilna) --- */
+@media (max-width: 768px) {
+    .contact-header-container {
+        display: flex;
+        flex-direction: column !important;
+        align-items: center !important;
+        padding: 20px !important;
+    }
+
+    .contact-info {
+        order: 1 !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+
+    .contact-image {
+        order: 2 !important;
+        width: 100% !important;
+        margin-top: 30px !important;
+    }
+
+    .contact-image img {
+        border-radius: 15px !important;
+    }
+}
+
+/* --- 2. HERO: ZAOKRĄGLONY SLIDER I UKŁAD --- */
+.hero-clean-layout {
+    padding: 60px 20px;
+    background-color: #ffffff; /* Tło sekcji Hero */
+}
+
+.hero-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.hero-image-slider {
+    flex: 1.2;
+    height: 500px;
+    position: relative;
+    /* To naprawia rogi slidera ze zdjęć */
+    border-radius: 40px !important; 
+    overflow: hidden !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+}
+/* Celujemy w trzecie zdjęcie w sliderze */
+.hero-image-slider .slide-item:nth-child(3) {
+    /* Przesuwamy zdjęcie maksymalnie w dół */
+    background-position: center bottom !important;
+}
+.hero-text-content {
+    flex: 1;
+    text-align: left;
+}
+
+/* Przyciski Hero - spójne z Twoim designem */
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-primary {
+    background-color: #3c0000 !important;
+    color: #ffffff !important;
+    padding: 14px 30px;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+.btn-secondary {
+    border: 2px solid #3c0000 !important;
+    color: #3c0000 !important;
+    padding: 12px 30px;
+    border-radius: 50px;
+    font-weight: bold;
+}
+
+/* --- 3. USUNIĘCIE POWODUJĄCEJ BŁĘDY FALI --- */
+/* Usuwamy definicję .hero-wave-divider, która zasłaniała napisy */
+.hero-wave-divider {
+    display: none !important;
+}
+
+/* --- 4. POPRAWKA NAWIGACJI (BĄBELKI/FALA W MENU) --- */
+.navbar {
+    background-color: #e7e4d5 !important;
+    position: relative;
+    z-index: 100;
+}
+
+.navbar::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -35px; /* Dopasuj, żeby nie było dziury */
+    width: 100%;
+    height: 40px;
+    background-color: #e7e4d5;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0,0 v10 Q5,20 10,10 T20,10 T30,10 T40,10 T50,10 T60,10 T70,10 T80,10 T90,10 T100,10 v-10 Z' /%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0,0 v10 Q5,20 10,10 T20,10 T30,10 T40,10 T50,10 T60,10 T70,10 T80,10 T90,10 T100,10 v-10 Z' /%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+}
+
+@media (max-width: 768px) {
+    .hero-container {
+        flex-direction: column !important;
+        text-align: center;
+    }
+    .hero-buttons {
+        justify-content: center;
+    }
+    /*.navbar::after {
+        -webkit-mask-size: 200% 100% !important;
+        mask-size: 200% 100% !important;
+    }*/
+}
+/* --- NOWA FALA NAD KATALOGIEM (POD SLIDEREM) --- */
+.categories-section {
+    position: relative;
+    background-color: #e7e4d5 !important; /* ZMIANA: Tło sekcji na beż */
+    padding-top: 100px !important;
+    margin-top: 0;
+}
+
+.categories-section::before {
+    content: "";
+    position: absolute;
+    top: -39px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #e7e4d5 !important; /* ZMIANA: Kolor ząbków na beż */
+    
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0,0 v10 Q5,20 10,10 T20,10 T30,10 T40,10 T50,10 T60,10 T70,10 T80,10 T90,10 T100,10 v-10 Z' /%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0,0 v10 Q5,20 10,10 T20,10 T30,10 T40,10 T50,10 T60,10 T70,10 T80,10 T90,10 T100,10 v-10 Z' /%3E%3C/svg%3E");
+    
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    
+    transform: rotate(180deg);
+    z-index: 5;
+}
+/* Nowy, bordowy styl wyróżnika (§5) */
+        .important-box {
+            background-color: #fdfaf7; /* Bardzo jasny, ciepły beż */
+            border-left: 5px solid #391f26; /* Grubszy, bordowy pasek po lewej */
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 10px; /* Delikatne zaokrąglenie */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.02); /* Minimalny cień */
+        }
+/* GŁÓWNY KONTENER TREŚCI */
+.price {
+    font-size: 28px;
+    color: #800020;
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    margin: 10px 0;
+    display: block;
+}
+.delivery-container {
+    max-width: 900px;           /* Nieco szerszy, żeby karty miały miejsce */
+    margin: 140px auto 80px;    /* Margines od góry dla menu */
+    background: #ffffff;        /* PRZYWRÓCONE BIAŁE TŁO */
+    padding: 60px 40px;         /* Odstępy wewnątrz białego kontenera */
+    border-radius: 40px;        /* Zaokrąglone rogi kontenera */
+    box-shadow: 0 15px 45px rgba(0,0,0,0.03); /* Subtelny cień pod całością */
+}
+
+/* STYL KART DOSTAWY */
+.delivery-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 40px;
+    margin-top: 30px;           /* Odstęp od napisu "Dostawa i Płatności" */
+}
+
+.delivery-card {
+    background: #fdfaf7;        /* Karty robią się lekko beżowe, by odcinać się od białego tła kontenera */
+    border: 1px solid #e7e4d5;
+    padding: 35px 25px;
+    border-radius: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.delivery-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(60, 0, 0, 0.05);
+}
+
+.delivery-icon {
+    width: 60px;
+    height: 60px;
+    background: #fdfaf7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: #800020; /* Twój bordowy kolor */
+    border: 1px solid #eee7df;
+}
+
+.delivery-card h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+    color: #3c0000;
+}
+
+.delivery-card .price {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: #800020;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.delivery-card p {
+    font-size: 12px;
+    color: #777;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Responsywność dla telefonów */
+@media (max-width: 650px) {
+    .delivery-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+/* KARTA PŁATNOŚCI (Na całą szerokość pod dostawą) */
+.info-box {
+    margin-top: 0;
+    grid-column: span 2; /* Zajmuje dwa rzędy na desktopie */
+    text-align: left;
+}
+
+
+.payment-section {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.payment-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.payment-card {
+    background: #ffffff;
+    border: 1px solid #e7e4d5;
+    padding: 30px 20px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.payment-icon {
+    width: 50px;
+    height: 50px;
+    background: #fcf8f3;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+    color: #391f26;
+}
+
+.blik-accent {
+    background: #391f26;
+    color: #ffffff;
+    font-size: 10px;
+}
+
+.payment-card h3 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    color: #3c0000;
+}
+
+.payment-card p {
+    font-size: 12px;
+    color: #777;
+    line-height: 1.5;
+    margin: 0;
+}
+
+.payment-status-info {
+    margin-top: 30px;
+    font-size: 13px;
+    color: #3c0000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+    background: #fdfaf7;
+    padding: 15px;
+    border-radius: 15px;
+}
+
+@media (max-width: 600px) {
+    .payment-grid { grid-template-columns: 1fr; }
+}
+/* Przywracamy odstęp TYLKO dla urządzeń mobilnych (ekrany mniejsze niż 768px) */
+@media (max-width: 768px) {
+    .hero-clean-layout {
+        margin-top: 80px; /* Dostosuj tę wartość (np. wysokość Twojego mobilnego menu) */
+        padding-top: 20px;
+    }
+    .hero-clean-layout {
+            display: flex !important;
+            flex-direction: column !important; /* Układa elementy w pionie */
+            margin-top: 40px !important;
+        }
+
+        .hero-container {
+        display: flex !important;
+        flex-direction: column !important; /* Układa tekst nad zdjęciem */
+    }
+    
+    /* Wymuszamy, by główny kontener był pionowy */
+    .hero-container {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important; /* Wypycha wszystko do góry */
+    align-items: center !important;
+    padding-top: 0 !important;            /* Kasuje odstęp od góry */
+    margin-top: 0 !important;
+}
+
+    /* Naprawa slidera - robimy z niego widoczny blok */
+    .hero-image-slider {
+    display: block !important;
+    height: 0 !important;           /* Resetujemy wysokość, która nie działa */
+    padding-bottom: 80% !important; /* To stworzy przestrzeń na zdjęcie (proporcja 4:5) */
+    position: relative !important;
+    width: 100% !important;
+    margin: 10px 0 !important;
+}
+.hero-text-content {
+    margin-top: 0 !important;
+    padding-top: 10px !important;
+}
+
+    /* Naprawa zdjęć w środku - wymuszamy ich pokazanie */
+    .slide-item {
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background-size: cover !important;
+        background-position: center !important;
+        /* Jeśli Twój skrypt JS nie nadaje klasy active, wymuś pokazanie pierwszego: */
+    }
+    
+    .slide-item:first-child {
+        display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+    }
+}
+/* Styl dla sekcji Jak to działa */
+.how-it-works {
+    padding: 80px 20px;
+    background-color: #ffffff;
+    text-align: center;
+}
+
+.steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-top: 50px;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.step-card {
+    padding: 30px;
+    transition: transform 0.3s ease;
+}
+
+.step-card:hover {
+    transform: translateY(-10px);
+}
+
+.step-icon {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #e7e4d5; /* Kolor Twojej fali */
+    margin-bottom: 20px;
+    font-family: 'serif';
+    opacity: 0.6;
+}
+
+.step-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.step-card p {
+    color: #666;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* RWD dla telefonów */
+@media (max-width: 768px) {
+    .how-it-works {
+        padding: 50px 15px;
+    }
+    .steps-grid {
+        gap: 20px;
+    }
+}
+
+/* GŁÓWNA SEKCJA KATEGORII - musi mieć position relative */
+
+.bottom-scallop-divider {
+    width: 100%;
+    height: 50px; /* Wysokość samej fali */
+    background-color: #e7e4d5;
+    position: relative;
+    margin-top: -1px;
+    z-index: 1;
+    
+    /* Maska tworząca płynną sinusoidę */
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='M0 0 L100 0 L100 10 C 75 10 75 20 50 20 C 25 20 25 10 0 10 Z' /%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='M0 0 L100 0 L100 10 C 75 10 75 20 50 20 C 25 20 25 10 0 10 Z' /%3E%3C/svg%3E");
+    
+    /* Dopasowanie szerokości fali do tej z góry strony */
+    -webkit-mask-size: 250px 100%; 
+    mask-size: 250px 100%;
+    -webkit-mask-repeat: repeat-x;
+}
+/* Celujemy w ekrany telefonów i małych tabletów */
+@media (max-width: 768px) {
+    .bottom-scallop-divider {
+    width: 100%;
+    height: 50px; /* Wysokość samej fali */
+    background-color: #e7e4d5;
+    position: relative;
+    margin-top: -1px;
+    z-index: 1;
+    
+    /* Maska tworząca płynną sinusoidę */
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='M0 0 L100 0 L100 10 C 75 10 75 20 50 20 C 25 20 25 10 0 10 Z' /%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20'%3E%3Cpath d='M0 0 L100 0 L100 10 C 75 10 75 20 50 20 C 25 20 25 10 0 10 Z' /%3E%3C/svg%3E");
+    
+    /* Dopasowanie szerokości fali do tej z góry strony */
+    -webkit-mask-size: 250px 100%; 
+    mask-size: 250px 100%;
+    -webkit-mask-repeat: repeat-x;
+}
+}
+.video-info-section {
+    padding: 100px 5%;
+    background-color: #ffffff; /* Bardzo jasny, ciepły odcień */
+}
+
+.video-info-container {
+    display: flex;
+    align-items: flex-start; /* Wyrównanie do góry wygląda lepiej przy liście kroków */
+    gap: 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Subtelna odznaka nad tytułem */
+.sub-badge {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.75rem;
+    color: #b5838d; /* Odcień przygaszonego różu/bordo */
+    font-weight: 700;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.text-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+.main-desc {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 40px;
+    max-width: 500px;
+}
+
+/* Stylizacja kroków 01, 02, 03 */
+/* Kontener na kroki - musi mieć pozycję relative */
+.features-grid {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 40px; /* Zwiększyłem odstęp, żeby linia była lepiej widoczna */
+}
+
+/* Każdy krok */
+.feature-item {
+    position: relative;
+    display: flex;
+    gap: 25px;
+    align-items: flex-start;
+}
+
+/* Tworzymy pionową linię */
+.feature-item:not(:last-child)::before {
+    content: "";
+    position: absolute;
+    /* Linia zaczyna się pod numerem */
+    left: 11px; /* Połowa szerokości cyfry, by była idealnie pod nią */
+    top: 35px;  /* Start linii pod cyfrą */
+    bottom: -45px; /* Koniec linii przy następnej cyfrze */
+    width: 1px;
+    background-color: #b5838d; /* Ten sam kolor co numerki */
+    opacity: 0.3; /* Linia powinna być subtelniejsza niż numer */
+}
+
+/* Opcjonalnie: upewnijmy się, że cyfry są równe */
+.feature-icon {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: #b5838d;
+    font-weight: 400;
+    width: 25px; /* Stała szerokość pomaga wycentrować linię */
+    text-align: center;
+    flex-shrink: 0;
+}
+.feature-text h4 {
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.feature-text p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #777;
+    line-height: 1.5;
+}
+
+.mini-footer-note {
+    width: 100%;
+    text-align: left;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+.video-side {
+    flex: 0 0 350px; /* Zwiększamy z 250px na 350px */
+    max-width: 350px;
+    margin-top: 10px;
+}
+
+.demo-video-vertical {
+    width: 100%;
+    height: auto;
+    border-radius: 35px; /* Proporcjonalnie większe zaokrąglenie */
+    box-shadow: 0 12px 30px rgba(0,0,0,0.07);
+}
+
+.video-info-container {
+    display: flex;
+    align-items: center; /* Centrowanie pionowe sprawi, że całość będzie spójna */
+    gap: 50px; /* Zmniejszamy nieco lukę, żeby film i tekst były bliżej siebie */
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.text-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Wyrównuje nagłówki i opisy do lewej */
+    text-align: left;        /* Gwarantuje wyrównanie tekstu */
+}
+.category-card {
+    transition: transform 0.3s ease;
+    overflow: hidden; /* Ważne, żeby zdjęcie nie wyszło poza ramkę */
+}
+
+.category-card:hover {
+    transform: translateY(-10px); /* Karta lekko się unosi */
+}
+
+.category-image img {
+    transition: transform 0.5s ease;
+}
+
+.category-card:hover .category-image img {
+    transform: scale(1.05); /* Zdjęcie w środku delikatnie rośnie */
+}
+/* 1. RESET DLA CAŁEJ STRONY (kluczowe dla dołu i boków) */
+
+
+/* 2. FALBANKA - Uproszczona */
+.footer-scallop {
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    top: -49px; /* Wypycha falbankę IDEALNIE nad beżowy prostokąt */
+    left: 0;
+    z-index: 5;
+}
+
+.footer-scallop::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath fill='%23e7e4d5' d='M0,40 C50,40 50,0 100,0 C150,0 150,40 200,40 Z'/%3E%3C/svg%3E");
+    background-size: 25% 50px;
+    background-repeat: repeat-x;
+}
+
+/* 3. GŁÓWNA STOPKA - Pełna szerokość bez ujemnych marginesów */
+.site-footer {
+    background-color: #e7e4d5 !important;
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0;
+    margin-top: 20px; /* Zmniejszono z 50px - to podciągnie falbankę do góry */
+}
+
+/* 4. KONTENER NA KOLUMNY - Tu dzieje się magia układu */
+.footer-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 20px 0 20px; /* Zmniejszono górny padding z 40px na 20px */
+}
+
+.footer-brand, .footer-column {
+    margin-bottom: 20px; /* Zmniejszono z 40px - kolumny będą "krótsze" */
+}
+
+/* 5. TYPOGRAFIA WOW */
+.footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #33312b;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+}
+
+.footer-column h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: #33312b;
+}
+
+.footer-column ul {
+    list-style: none !important; /* Usuwa te uparte kropki z image_82243a.png */
+    padding: 0 !important;
+    margin: 0;
+}
+
+.footer-column ul li {
+    margin-bottom: 10px;
+}
+
+.footer-column ul li a {
+    text-decoration: none;
+    color: #615f54;
+    font-size: 15px;
+    transition: 0.3s;
+}
+
+.footer-column ul li a:hover {
+    color: #000;
+    padding-left: 5px;
+}
+
+/* 6. DOLNA CZĘŚĆ - Likwidacja białego paska */
+.footer-bottom {
+    background-color: #e7e4d5;
+    width: 100%;
+    margin: 0;
+    padding: 20px 0 10px 0; /* Zmniejszyłem paddingi - teraz dół będzie "chudszy" */
+    border-top: 1px solid rgba(0,0,0,0.05);
+    text-align: center;
+}
+@media (max-width: 768px) {
+    /* 1. Zmiana układu z dwóch kolumn na jedną */
+    .video-info-container {
+        flex-direction: column !important;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+    }
+
+    /* 2. Wideo na całą szerokość (z marginesem) */
+    .video-side {
+        width: 100% !important;
+        margin-bottom: 30px;
+    }
+
+    .demo-video-vertical {
+        width: 100%;
+        max-width: 350px; /* Żeby na tabletach nie było gigantyczne */
+        border-radius: 20px;
+        height: auto;
+    }
+
+    /* 3. Tekst pod wideo */
+    .text-side {
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    /* 4. Lista kroków 01, 02, 03 - wyrównanie */
+    .feature-item {
+        flex-direction: column; /* Ikona nad tekstem */
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .feature-text {
+        text-align: center;
+    }
+
+    .feature-icon {
+        margin-bottom: 10px;
+    }
+
+    /* 5. Dostosowanie tytułów */
+    .text-title {
+        font-size: 24px !important;
+    }
+}
+@media (max-width: 768px) {
+    .footer-scallop {
+    /* Przesuwamy nieco bardziej w górę, by "zjadło" białą linię */
+    top: -24px !important; 
+}
+
+    .footer-scallop::before {
+    background-size: 25% 25px !important; /* Dokładnie 4 garby (100% / 4) */
+    /* LUB */
+    /* background-size: 20% 25px !important; (Dokładnie 5 garbów) */
+}
+}
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-top: 40px;
+    }
+
+    .footer-brand {
+        width: 100%;
+        margin-bottom: 30px; /* Odstęp tylko dla logo/brandu */
+    }
+
+    .footer-column {
+        width: 100%;
+        margin-bottom: 0 !important; /* Resetujemy margines, bo h3 ma swój padding */
+    }
+
+    .footer-column h3 {
+        position: relative;
+        cursor: pointer;
+        padding: 15px 0;
+        margin: 0;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1rem;
+        text-transform: uppercase;
+    }
+
+    .footer-column h3::after {
+        content: '∨';
+        font-size: 12px;
+        margin-left: 10px;
+        transition: transform 0.3s ease;
+    }
+
+    .footer-column.active h3::after {
+        transform: rotate(180deg);
+    }
+
+    /* Ukrywamy listę */
+    .footer-column ul {
+        display: none; 
+        padding: 15px 0 !important;
+        margin: 0 !important;
+        list-style: none;
+        background: rgba(0,0,0,0.02); /* Delikatne tło pod rozwiniętą listą */
+    }
+
+    /* Pokazujemy listę */
+    .footer-column.active ul {
+        display: block !important;
+    }
+
+    .footer-bottom {
+        padding-top: 20px;
+        margin-top: 20px;
+        border-top: 1px solid rgba(0,0,0,0.05);
+    }
+}
+/* --- 1. STYLE WSPÓLNE DLA IKON --- */
+.social-icons-wrapper {
+    display: flex;
+    gap: 18px;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+/* Podstawowy styl ikon */
+.social-icons-wrapper svg {
+    width: 22px;
+    height: 22px;
+    color: #4a4a4a;
+    transition: all 0.3s ease;
+}
+
+/* --- NOWOŚĆ: Ikony w stopce na PC (Pionowo i większe) --- */
+.pc-only-socials .social-icons-wrapper {
+    flex-direction: column;   /* Ustawia ikony jedna pod drugą */
+    align-items: flex-start;  /* Wyrównuje do lewej, pod mailem */
+    gap: 15px;                /* Odstęp między ikonami w pionie */
+    margin-top: 20px;
+}
+
+.pc-only-socials .social-icons-wrapper svg {
+    width: 28px;              /* Powiększenie ikon w stopce */
+    height: 28px;
+}
+
+/* Efekt hover */
+@media (hover: hover) {
+    .social-icons-wrapper a:hover svg {
+        color: #8d8071;
+        transform: translateX(5px); /* Na PC fajniej wygląda lekkie wysunięcie w prawo przy układzie pionowym */
+    }
+}
+
+/* --- 2. LOGIKA WYŚWIETLANIA (PC vs MOBILE) --- */
+.mobile-only-socials {
+    display: none !important;
+}
+
+.pc-only-socials {
+    display: block !important;
+}
+
+/* --- 3. WIDOK MOBILNY (Poniżej 768px) --- */
+@media (max-width: 768px) {
+    .pc-only-socials {
+        display: none !important;
+    }
+
+    .mobile-only-socials {
+        display: block !important;
+        width: 100%;
+        margin-top: 20px;
+        padding: 15px 0;
+        border-top: 1px solid rgba(0,0,0,0.05);
+        list-style: none;
+    }
+
+    /* W menu mobilnym zostawiamy układ POZIOMY i środkowanie */
+    .mobile-only-socials .social-icons-wrapper {
+        flex-direction: row;      /* Wymuszamy poziom w menu mobilnym */
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .social-icons-wrapper svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+.coming-soon-section {
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.coming-soon-content {
+    max-width: 600px;
+}
+
+.coming-soon-badge {
+    display: inline-block;
+    padding: 5px 15px;
+    background: #f4f4f4;
+    color: #666;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+}
+
+.coming-soon-content h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 400;
+    margin-bottom: 20px;
+    letter-spacing: 5px;
+}
+
+.coming-soon-text {
+    font-family: 'Montserrat', sans-serif;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.coming-soon-divider {
+    width: 50px;
+    height: 1px;
+    background: #f6f2e9;
+    margin: 30px auto;
+}
+
+.back-to-shop-btn {
+    display: inline-block;
+    padding: 15px 35px;
+    /* Jasny beż nawiązujący do Twoich fal */
+    background: #f8f5f0; 
+    /* Ciemniejszy odcień beżu lub bardzo ciemna szarość dla tekstu */
+    color: #1a1a1a;
+    /* Cienkie obramowanie */
+    border: 1px solid #d1c7bc; 
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.back-to-shop-btn:hover {
+    /* Przy najechaniu tło może stać się całkiem białe, a ramka ciemniejsza */
+    background: #ffffff;
+    border-color: #1a1a1a;
+    letter-spacing: 3px; /* Subtelny efekt rozszerzenia tekstu */
+}
+
+@media (max-width: 768px) {
+    .coming-soon-content h1 {
+        font-size: 2rem;
+    }
 }

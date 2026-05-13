@@ -7,6 +7,37 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://geowidget.inpost.pl/sdk/for-javascript.js"></script>
 <link rel="stylesheet" href="https://geowidget.inpost.pl/sdk/for-javascript.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+    /* Poprawka odstępu dla wersji mobilnej */
+    @media (max-width: 768px) {
+        .products-section {
+            /* Odsuwamy całą sekcję produktów od góry */
+            margin-top: 80px !important; 
+            padding-top: 20px !important;
+        }
+
+        .section-title {
+            /* Dodatkowy oddech dla samego napisu */
+            margin-bottom: 30px !important;
+            font-size: 1.5rem !important;
+            text-align: center;
+        }
+
+        /* Opcjonalnie: jeśli kafelki produktów są zbyt blisko siebie */
+        .product-grid {
+            gap: 25px !important;
+            padding: 0 15px !important;
+        }
+    }
+
+    /* Poprawka dla wersji komputerowej (żeby nie było dziury) */
+    @media (min-width: 769px) {
+        .products-section {
+            margin-top: 40px;
+        }
+    }
+</style>
 </head>
 <body>
 
@@ -18,24 +49,39 @@
     </div>
     
     <ul class="nav-links">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="mini.html">instax MINI</a></li>
-        <li><a href="square.html">instax SQUARE</a></li>
-        <li><a href="wide.html">instax WIDE</a></li>
-        <li class="cart-wrapper">
-    <div class="cart-container" onclick="toggleCart()">
-        <span class="cart-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="3" y="8" width="18" height="13" rx="2" ry="2"></rect>
-                <path d="M16 10a4 4 0 0 0-8 0"></path>
-            </svg>
-            <span id="cart-count" class="cart-badge" style="display: none;">0</span>
-        </span>
-    </div>
-</li>
-    </ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="mini.html">instax MINI</a></li>
+    <li><a href="square.html">instax SQUARE</a></li>
+    <li><a href="wide.html">instax WIDE</a></li>
+    
+    <!-- Sekcja ikon Social Media widoczna TYLKO w menu mobilnym -->
+    <li class="mobile-only-socials">
+        <div class="social-icons-wrapper">
+            <a href="http://www.facebook.com/profile.php?id=61572027870815" target="_blank" aria-label="Facebook">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+            </a>
+            <a href="https://www.instagram.com/ustalmygrawer/" target="_blank" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-miterlimit="10"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </a>
+            <a href="https://www.tiktok.com/@ustalmygrawer" target="_blank" aria-label="TikTok">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+            </a>
+        </div>
+    </li>
+    <li class="cart-wrapper">
+        <div class="cart-container" onclick="toggleCart()">
+            <span class="cart-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="8" width="18" height="13" rx="2" ry="2"></rect>
+                    <path d="M16 10a4 4 0 0 0-8 0"></path>
+                </svg>
+                <span id="cart-count" class="cart-badge" style="display: none;">0</span>
+            </span>
+        </div>
+    </li>
+</ul>
 </nav>
-
+<main class="content-wrapper">
     <main class="products-section">
         <h1 class="section-title">Ramki instax MINI</h1>
        <div class="product-grid">
@@ -108,7 +154,7 @@
                 <p style="font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px; border-top: 1px solid #eee; padding-top: 20px;">Dane do wysyłki:</p>
                 
                 <form action="https://formspree.io/f/mwvynybl" method="POST" id="checkout-form" style="display: flex; flex-direction: column; gap: 10px;">
-    <input type="hidden" name="_next" value="https://ustalmygrawer.github.io/dziekujemy.html">                
+    <input type="hidden" name="_next" value="https://ustalmygrawer.github.io/ustalmygrawer/dziekujemy.html">                
     <input type="hidden" name="Produkty" id="form-products">
     <input type="hidden" name="Suma_Calkowita" id="form-total">
     <input type="hidden" name="Zastosowany_Rabat" id="form-discount">
@@ -120,6 +166,14 @@
     <label style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: #666;">Numer Paczkomatu:</label>
     <input type="text" id="paczkomat-search" name="Nr_Paczkomatu" placeholder="Np. KRA01M" style="width: 100%; padding: 10px; border: 1px solid #1a1a1a; font-size: 0.9rem; margin-top: 5px;">
     
+    <div style="margin-top: 10px; margin-bottom: 10px;">
+        <p style="font-size: 0.8rem; margin-bottom: 5px; color: #333;">Nie znasz kodu paczkomatu?</p>
+        <a href="https://inpost.pl/znajdz-paczkomat" target="_blank" 
+           style="text-decoration: underline !important; color: #666 !important; font-size: 0.8rem; font-weight: bold;">
+           KLIKNIJ TUTAJ, ABY ZNALEŹĆ SWÓJ PACZKOMAT
+        </a>
+    </div>
+
     <label style="font-size: 0.7rem; font-weight: bold; text-transform: uppercase; color: #666; margin-top: 10px; display: block;">Numer telefonu:</label>
     <input type="tel" id="paczkomat-phone" name="Telefon_Paczkomat" placeholder="Dla powiadomień InPost" style="width: 100%; padding: 10px; border: 1px solid #ddd; font-size: 0.9rem; margin-top: 5px;">
 </div>
@@ -198,5 +252,70 @@
 }
     </script>
     <script src="cart.js"></script>
+    </main>
+<footer class="site-footer">
+        <div class="footer-scallop"></div>
+    <div class="footer-container">
+        <div class="footer-brand">
+            <h2 class="footer-logo">USTALMY GRAWER</h2>
+            <p><a href="mailto:kontakt@ustalmygrawer.pl">ustalmygrawer@gmail.com</a></p>
+        </div>
+<div class="pc-only-socials">
+        <div class="social-icons-wrapper">
+                   <!-- Facebook -->
+    <a href="http://www.facebook.com/profile.php?id=61572027870815" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+        </svg>
+    </a>
+    <!-- Instagram -->
+    <a href="https://www.instagram.com/ustalmygrawer/" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-miterlimit="10">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
+    </a>
+    <!-- TikTok -->
+    <a href="https://www.tiktok.com/@ustalmygrawer" target="_blank" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
+        </svg>
+    </a>
+            </div>
+        </div>
+         <div class="footer-column">
+    <h3>O NAS</h3>
+    <ul>
+        <li><a href="kontakt.html">Kontakt</a></li>
+        <li><a href="o-nas.html">O nas</a></li>
+        <li><a href="regulamin.html">Regulamin</a></li>
+        <li><a href="polityka-prywatnosci.html">Polityka prywatności</a></li>
+    </ul>
+</div>
+
+<div class="footer-column">
+    <h3>OBSŁUGA KLIENTA</h3>
+    <ul>
+        <li><a href="dostawa.html">Metody i koszt dostawy</a></li>
+        <li><a href="zwroty.html">Zwroty i reklamacje</a></li>
+    </ul>
+</div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>&copy; <span id="current-year"></span> Ustalmy Grawer. Wszelkie prawa zastrzeżone.</p>
+        <p class="author">Realizacja własna.</p>
+    </div>
+</footer>
+<script>
+  AOS.init({
+    duration: 1000,    // Czas trwania animacji (1 sekunda)
+    once: false,       // Zmień na false, jeśli chcesz, by animacja powtarzała się przy każdym przewinięciu (lub zostaw true, by raz "wjechała")
+    offset: 200,       // Animacja odpali się dopiero, gdy element będzie 200px w polu widzenia (kluczowe!)
+    delay: 100,        // Małe opóźnienie, żeby wyglądało naturalniej
+    easing: 'ease-in-out',
+  });
+</script>
 </body>
 </html>

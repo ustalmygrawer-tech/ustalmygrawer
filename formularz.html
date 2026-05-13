@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formularz Zwrotu - Ustalmy Grawer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3c0000;
+            --accent-bg: #ffffff;
+            --border-color: #ffffff;
+            --text-main: #000;
+            --text-muted: #000;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #e7e4d5;
+            margin: 0;
+            padding: 40px 20px;
+            color: var(--text-main);
+        }
+
+        /* Kontener A4 */
+        .a4-page {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 60px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            border-radius: 5px;
+            position: relative;
+        }
+
+        .no-print-header {
+            max-width: 800px;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-print {
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+
+        .btn-print:hover { opacity: 0.9; }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Nagłówek dokumentu */
+        .doc-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .doc-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            margin: 0;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .doc-header p {
+            font-size: 12px;
+            letter-spacing: 3px;
+            color: var(--text-muted);
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+
+        /* Sekcje adresowe */
+        .grid-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+            border-left: 3px solid var(--primary-color);
+            padding-left: 10px;
+        }
+
+        .address-box p {
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .input-field {
+            margin-bottom: 5px;
+        }
+
+        .input-field label {
+            display: block;
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .input-line {
+            border-bottom: 1px solid #ddd;
+            height: 20px;
+            width: 100%;
+        }
+
+        /* Tabela produktów */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th {
+            background-color: var(--accent-bg);
+            border: 1px solid #000;
+            padding: 12px;
+            font-size: 10px;
+            text-transform: uppercase;
+            text-align: left;
+        }
+
+        td {
+            border: 1px solid #000;
+            padding: 15px 12px;
+            height: 30px;
+        }
+
+        .reasons-legend {
+            font-size: 11px;
+            color: #000;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            line-height: 1.6;
+        }
+
+        /* Zwrot środków */
+        .bank-section {
+            background-color: var(--accent-bg);
+            padding: 25px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        /* Stopka / Podpisy */
+        .doc-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+        }
+
+        .signature-line {
+            text-align: center;
+            border-top: 1px solid #000000;
+            width: 200px;
+            padding-top: 8px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .legal-note {
+            text-align: center;
+            font-size: 10px;
+            color: #666;
+            margin-top: 25px;
+        }
+
+        /* Ustawienia druku */
+        @media print {
+            body { background: white; padding: 0; }
+            .no-print-header { display: none; }
+            .a4-page { 
+                box-shadow: none; 
+                padding: 0;
+                width: 100%;
+            }
+            .btn-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print-header">
+        <a href="zwroty.html" class="back-link">← Powrót do strony zwrotów</a>
+        <button class="btn-print" onclick="window.print()">Drukuj jako PDF</button>
+    </div>
+
+    <div class="a4-page">
+        <div class="doc-header">
+            <h1>Formularz Zwrotu</h1>
+            <p>Ustalmy Grawer</p>
+        </div>
+
+        <div class="grid-sections">
+            <div class="address-box">
+                <div class="section-title">Adresat (Sprzedawca)</div>
+                <p>
+                    <strong>USTALMY Anna Kozłowska</strong><br>
+                    Paprotnia 39B<br>
+                    95-060 Paprotnia<br>
+                    <span style="color: #666;">ustalmygrawer@gmail.com</span>
+                </p>
+            </div>
+            <div class="address-box">
+                <div class="section-title">Nadawca (Klient)</div>
+                <div class="input-field">
+                    <label>Imię i Nazwisko</label>
+                    <div class="input-line"></div>
+                </div>
+                <div class="input-field">
+                    <label>Numer telefonu / E-mail</label>
+                    <div class="input-line"></div><br>
+                    <label>Adres korespondencyjny</label>
+                    <div class="input-line"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-title">Szczegóły zamówienia</div>
+        <div class="grid-sections" style="margin-bottom: 20px;">
+            <div class="input-field">
+                <label>Numer zamówienia</label>
+                <div class="input-line"></div>
+            </div>
+            <div class="input-field">
+                <label>Data otrzymania towaru</label>
+                <div class="input-line"></div>
+            </div>
+        </div>
+
+        <div class="section-title">Zwracane produkty</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 55%;">Nazwa produktu (bez personalizacji)</th>
+                    <th style="width: 10%;">Ilość</th>
+                    <th style="width: 15%;">Cena jedn.</th>
+                    <th style="width: 20%;">Kod powodu*</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>&nbsp;</td><td></td><td></td><td></td></tr>
+                <tr><td>&nbsp;</td><td></td><td></td><td></td></tr>
+                <tr><td>&nbsp;</td><td></td><td></td><td></td></tr>
+            </tbody>
+        </table>
+
+        <div class="reasons-legend">
+            <strong>*Kody powodów zwrotu:</strong><br>
+            1. Produkt nie spełnia oczekiwań &nbsp;&nbsp; 2. Produkt dotarł uszkodzony &nbsp;&nbsp; 3. Otrzymano niewłaściwy produkt <br>
+            4. Rezygnacja bez podania przyczyny &nbsp;&nbsp; 5. Inny: ..............................................................................................................................
+        </div>
+
+        <div class="section-title">Zwrot należności</div>
+        <div class="bank-section">
+            <div class="input-field" style="margin-bottom: 0;">
+                <label>Numer konta bankowego do zwrotu środków</label>
+                <div class="input-line"></div>
+            </div>
+            <div class="doc-footer">
+            <div class="signature-line" style="border: none; text-align: left;">
+                <div class="signature-line"></div>
+                Miejscowość, Data:<br>
+            </div>
+            <div class="signature-line">
+                Czytelny Podpis Klienta
+            </div>
+        </div>
+<div class="legal-note">
+        <strong>Indormacje dodatkowe</strong>
+        <p>Produkt powinien być w stanie nienaruszonym, bez śladów użytkowania. Prosimy zapakować go starannie i dołączyć ten formularz do paczki. Koszt odesłania produktu ponosi kupujący.</p>
+        </div>
+    </div>
+        </div>
+</body>
+</html>
