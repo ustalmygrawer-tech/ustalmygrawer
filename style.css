@@ -1997,6 +1997,7 @@ html, body {
     -webkit-mask-size: 250px 100%; 
     mask-size: 250px 100%;
     -webkit-mask-repeat: repeat-x;
+    mask-repeat: repeat-x;
 }
 /* Celujemy w ekrany telefonów i małych tabletów */
 @media (max-width: 768px) {
@@ -2016,6 +2017,7 @@ html, body {
     -webkit-mask-size: 250px 100%; 
     mask-size: 250px 100%;
     -webkit-mask-repeat: repeat-x;
+    mask-repeat: repeat-x;
 }
 }
 .video-info-section {
@@ -2555,7 +2557,7 @@ html, body {
 }
 @media (max-width: 768px) {
     .product-gallery-wrapper {
-        position: relative; !important;
+        position: relative !important;
         width: 100%;
         overflow: hidden; /* To zapobiega 'pływaniu' strony na boki */
     }
@@ -2794,24 +2796,33 @@ html, body {
 }
 
 .inpost-map-btn {
-    width: 100%;
-    background: #ffcc00;
-    color: black;
-    border: none;
-    padding: 12px;
-    cursor: pointer;
+    display: flex;
+    flex-direction: column; /* Ustawia teksty jeden pod drugim */
+    justify-content: center;
+    align-items: center;
+    line-height: 1.1;       /* Kluczowa wartość - im mniejsza, tym bliżej siebie zdania */
+    padding: 8px 0;         /* Odstęp wewnętrzny góra/dół */
+    text-decoration: none;
+    background-color: #ffcc00;
+    color: #333;
     font-weight: bold;
-    text-transform: uppercase;
-    font-size: 0.75rem;
-    margin: 10px 0;
+    font-size: 14px;
+}
+
+/* Opcjonalnie: mniejszy tekst dla dolnej linii */
+.inpost-map-btn span {
+    font-size: 6px;
+    margin-top: 2px; /* Tutaj możesz precyzyjnie ustawić odstęp w pikselach */
 }
 
 /* --- PRAWA STRONA KOSZYKA (Przywrócenie Stylu PC) --- */
 .cart-grid {
-    display: grid;
-    grid-template-columns: 1.2fr 0.8fr;
-    gap: 40px;
-}
+        display: grid;
+        grid-template-columns: 1fr 350px; /* Lewa strona elastyczna, prawa stała */
+        gap: 30px;
+        align-items: start;
+    }
+
 
 .cart-summary {
     background: #fafafa; /* Jasne, szare tło sekcji */
@@ -2941,12 +2952,180 @@ html, body {
     }
 
     .cart-grid {
-        grid-template-columns: 1fr; /* Jedna kolumna */
+        display: flex;
+        flex-direction: column;
         gap: 20px;
     }
 
     .cart-summary {
         order: 1; /* Podsumowanie na dole na mobile */
         padding: 15px;
+    }
+}
+@media (max-width: 600px) {
+    .thank-you-container {
+        margin: 20px 15px;
+        padding: 20px;
+    }
+}
+.terms-container {
+    margin: 20px 0;
+    display: flex;
+    align-items: flex-start;
+    text-align: left;
+    gap: 10px;
+}
+
+.terms-container input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    cursor: pointer;
+}
+
+.terms-container label {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.4;
+    cursor: pointer;
+}
+
+.terms-container a {
+    color: #3c0000;
+    text-decoration: underline;
+}
+
+/* Styl dla błędu (gdy ktoś pominie) */
+.terms-container input:invalid {
+    outline: 2px solid #ff000033;
+}
+/* Styl dla przycisku-linku */
+.inpost-map-link {
+    display: block;
+    width: 100%;
+    background-color: #ffca00;
+    color: #000;
+    text-align: center;
+    padding: 12px;
+    border-radius: 5px; /* Mniejszy promień, jak na zdjęciu */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase; /* Wielkie litery */
+}
+
+.inpost-map-link:hover {
+    background-color: #e6b600;
+}
+
+/* Styl dla dymka informacji */
+.paczkomat-info-trigger {
+    position: relative;
+    cursor: pointer;
+}
+
+.info-icon {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: #3c0000;
+    color: #fff;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    font-size: 12px;
+}
+
+.info-bubble {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 30px;
+    width: 220px;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 1000;
+    font-size: 12px;
+    color: #333;
+}
+
+.paczkomat-info-trigger:hover .info-bubble {
+    display: block;
+}
+/* Styl dla kontenera dymka */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* Ikona znaku zapytania */
+.info-icon {
+    background: #eee;
+    color: #333;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid #ccc;
+}
+
+/* Ukryta treść dymka */
+.tooltip-content {
+    visibility: hidden;
+    width: 200px;
+    background-color: #ffffff;
+    color: #333;
+    text-align: center;
+    border-radius: 8px;
+    padding: 10px;
+    position: absolute;
+    z-index: 100;
+    bottom: 125%; /* Nad ikonką */
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+    border: 1px solid #ddd;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Strzałka pod dymkiem */
+.tooltip-content::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #ffffff transparent transparent transparent;
+}
+
+/* Pokazywanie po najechaniu */
+.tooltip-container:hover .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Na telefonach pokazuj po kliknięciu ikony */
+@media (max-width: 768px) {
+    .tooltip-content {
+        left: auto;
+        right: 0;
+        transform: none;
+    }
+    .tooltip-content::after {
+        left: 90%;
     }
 }

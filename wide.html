@@ -3,55 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kolekcja instax MINI | Ustalmy Grawer</title>
-    <link rel="stylesheet" href="https://sdk.inpost.pl/geowidget/v4/geowidget.css">
-<script src="https://sdk.inpost.pl/geowidget/v4/geowidget.js" defer></script>
+    <title>Kolekcja instax WIDE | Ustalmy Grawer</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
-<script>
-    // Inicjalizacja zaraz po załadowaniu biblioteki
-    window.easyPackAsyncInit = function () {
-        easyPack.init({
-            defaultWidgetType: 'dot',
-            googleMapsApiKey: false
-        });
-        console.log("InPost zainicjowany w HTML");
-    };
-</script>
-<style>
-    /* Poprawka odstępu dla wersji mobilnej */
-    @media (max-width: 768px) {
-        .products-section {
-            /* Odsuwamy całą sekcję produktów od góry */
-            margin-top: 80px !important; 
-            padding-top: 20px !important;
+    
+    <style>
+        @media (max-width: 768px) {
+            .coming-soon-section {
+                margin-top: 80px !important; 
+                padding-top: 20px !important;
+            }
         }
-
-        .section-title {
-            /* Dodatkowy oddech dla samego napisu */
-            margin-bottom: 30px !important;
-            font-size: 1.5rem !important;
-            text-align: center;
+        @media (min-width: 769px) {
+            .coming-soon-section {
+                margin-top: 40px;
+            }
         }
-
-        /* Opcjonalnie: jeśli kafelki produktów są zbyt blisko siebie */
-        .product-grid {
-            gap: 25px !important;
-            padding: 0 15px !important;
-        }
-    }
-
-    /* Poprawka dla wersji komputerowej (żeby nie było dziury) */
-    @media (min-width: 769px) {
-        .products-section {
-            margin-top: 40px;
-        }
-    }
-</style>
+    </style>
 </head>
 <body>
 
-    <nav class="navbar">
+<nav class="navbar">
     <div class="menu-toggle">
         <span></span>
         <span></span>
@@ -59,67 +32,68 @@
     </div>
     
     <ul class="nav-links">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="mini.html">instax MINI</a></li>
-    <li><a href="square.html">instax SQUARE</a></li>
-    <li><a href="wide.html" class="active">instax WIDE</a></li>
-    <li><a href="usg.html">USG</a></li>
-    
-    <!-- Sekcja ikon Social Media widoczna TYLKO w menu mobilnym -->
-    <li class="mobile-only-socials">
-        <div class="social-icons-wrapper">
-            <a href="http://www.facebook.com/profile.php?id=61572027870815" target="_blank" aria-label="Facebook">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
-            </a>
-            <a href="https://www.instagram.com/ustalmygrawer/" target="_blank" aria-label="Instagram">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-miterlimit="10"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-            </a>
-            <a href="https://www.tiktok.com/@ustalmygrawer" target="_blank" aria-label="TikTok">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
-            </a>
-        </div>
-    </li>
-    <li class="cart-wrapper">
-        <div class="cart-container" onclick="toggleCart()">
-            <span class="cart-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="3" y="8" width="18" height="13" rx="2" ry="2"></rect>
-                    <path d="M16 10a4 4 0 0 0-8 0"></path>
-                </svg>
-                <span id="cart-count" class="cart-badge" style="display: none;">0</span>
-            </span>
-        </div>
-    </li>
-</ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="mini.html">instax MINI</a></li>
+        <li><a href="square.html">instax SQUARE</a></li>
+        <li><a href="wide.html" class="active">instax WIDE</a></li>
+        <li><a href="usg.html">USG</a></li>
+        
+        <li class="mobile-only-socials">
+            <div class="social-icons-wrapper">
+                <a href="http://www.facebook.com/profile.php?id=61572027870815" target="_blank" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="https://www.instagram.com/ustalmygrawer/" target="_blank" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-miterlimit="10"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="https://www.tiktok.com/@ustalmygrawer" target="_blank" aria-label="TikTok">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+                </a>
+            </div>
+        </li>
+
+        <li class="cart-wrapper">
+            <div class="cart-container" onclick="toggleCart()">
+                <span class="cart-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="8" width="18" height="13" rx="2" ry="2"></rect>
+                        <path d="M16 10a4 4 0 0 0-8 0"></path>
+                    </svg>
+                    <span id="cart-count" class="cart-badge" style="display: none;">0</span>
+                </span>
+            </div>
+        </li>
+    </ul>
 </nav>
+
 <main class="content-wrapper">
     <section class="coming-soon-section">
-    <div class="coming-soon-content">
-        <span class="coming-soon-badge">Nowość wkrótce</span>
-        <h1>INSTAX WIDE</h1>
-        <p class="coming-soon-text">
-            Pracujemy nad nową kolekcją ramek, które idealnie podkreślą Twoje prostokątne wspomnienia. 
-            Premiera już niedługo!
-        </p>
-        <div class="coming-soon-divider"></div>
-        <a href="mini.html" class="back-to-shop-btn">ZOBACZ DOSTĘPNE RAMKI MINI</a>
-    </div>
-</section>
-    </main>
+        <div class="coming-soon-content">
+            <span class="coming-soon-badge">Nowość wkrótce</span>
+            <h1>INSTAX WIDE</h1>
+            <p class="coming-soon-text">
+                Pracujemy nad nową kolekcją ramek, które idealnie podkreślą Twoje prostokątne wspomnienia. 
+                Premiera już niedługo!
+            </p>
+            <div class="coming-soon-divider"></div>
+            <a href="mini.html" class="back-to-shop-btn">ZOBACZ DOSTĘPNE RAMKI MINI</a>
+        </div>
+    </section>
+</main>
 
-   <div id="cart-popup" class="popup-overlay">
+<div id="cart-popup" class="popup-overlay" style="display: none;">
     <div class="popup-content">
         <span class="close-popup" onclick="toggleCart()">&times;</span>
         
-        <h2 class="popup-title">Twój Koszyk</h2>
+        <h2 class="popup-title">TWÓJ KOSZYK</h2>
         
         <div class="cart-grid">
             <div class="cart-main">
                 <div id="cart-items-list"></div>
 
-                <p class="section-label">Dane do wysyłki:</p>
+                <p class="section-label">DANE DO WYSYŁKI:</p>
                 
-                <form action="https://formspree.io/f/mwvynybl" method="POST" id="checkout-form">
+                <form id="checkout-form">
                     <input type="hidden" name="_next" value="https://ustalmygrawer.github.io/ustalmygrawer/dziekujemy.html">                
                     <input type="hidden" name="Produkty" id="form-products">
                     <input type="hidden" name="Suma_Calkowita" id="form-total">
@@ -129,42 +103,55 @@
                     <input type="email" name="email" placeholder="E-mail" required class="cart-input">
                     
                     <div id="paczkomat-box" class="sub-box">
-                        <label>Numer Paczkomatu:</label>
-                        <input type="text" id="paczkomat-search" name="Nr_Paczkomatu" placeholder="Np. KRA01M" class="cart-input">
-                        <button type="button" onclick="openInPostModal()" class="inpost-map-btn">Wybierz paczkomat z mapy</button>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;">
+        <label>NUMER PACZKOMATU: *</label>
+        
+        <div class="tooltip-container">
+            <span class="info-icon">?</span>
+            <div class="tooltip-content">
+                <p>Znajdź paczkomat na mapie i wpisz jego kod (np. <b>KRA01M</b>) w pole poniżej.</p>
+                <img src="instrukcja-paczkomat.jpg" alt="Jak znaleźć kod" style="width:100%; border-radius:4px; margin-top:5px;">
+            </div>
+        </div>
+    </div>
 
-                        <label>Numer telefonu:</label>
-                        <input type="tel" id="paczkomat-phone" name="Telefon_Paczkomat" placeholder="Dla powiadomień InPost" class="cart-input">
-                    </div>
+    <input type="text" id="paczkomat-search" name="Nr_Paczkomatu" placeholder="Wklej kod paczkomatu Np. KRA01M" class="cart-input" required>
+    
+    <a href="https://inpost.pl/znajdz-paczkomat" target="_blank" class="inpost-map-btn" style="display: block; text-align: center; line-height: 1.0; padding: 10px 5px;">
+    WYSZUKAJ KOD PACZKOMATU
+</a>
+
+    <label style="display:block; margin-top:10px; font-size:12px;">NUMER TELEFONU:</label>
+    <input type="tel" id="paczkomat-phone" name="Telefon_Paczkomat" placeholder="Dla powiadomień InPost" class="cart-input">
+</div>
 
                     <div id="address-box" class="sub-box" style="display: none;"> 
-                        <p class="section-label">Dane do wysyłki kurierem:</p>
-                        <input type="text" name="street" id="street" placeholder="Ulica" class="cart-input">
-                        <div class="input-row">
-                            <input type="text" name="house_no" id="house_no" placeholder="Nr domu" class="cart-input">
-                            <input type="text" name="apt_no" id="apt_no" placeholder="Nr mieszkania" class="cart-input">
+                        <input type="text" name="street" placeholder="Ulica" class="cart-input">
+                        <div class="input-row" style="display: flex; gap: 10px;">
+                            <input type="text" name="house_no" placeholder="Nr domu" class="cart-input">
+                            <input type="text" name="apt_no" placeholder="Nr mieszkania" class="cart-input">
                         </div>
-                        <div class="input-row">
-                            <input type="text" name="zip" id="zip" placeholder="Kod pocztowy" class="cart-input">
-                            <input type="text" name="city" id="city" placeholder="Miejscowość" class="cart-input">
+                        <div class="input-row" style="display: flex; gap: 10px;">
+                            <input type="text" name="zip" placeholder="Kod pocztowy" class="cart-input">
+                            <input type="text" name="city" placeholder="Miejscowość" class="cart-input">
                         </div>
-                        <input type="tel" name="phone" id="customer-phone" placeholder="Telefon dla kuriera" class="cart-input">
+                        <input type="tel" name="phone" placeholder="Telefon dla kuriera" class="cart-input">
                     </div>
                 </form>
             </div>
 
             <div class="cart-summary">
                 <div class="promo-box">
-                    <p class="section-label">Kod rabatowy</p>
-                    <div class="promo-row">
-                        <input type="text" id="discount-code" placeholder="KOD">
-                        <button type="button" onclick="applyDiscount()">Aktywuj</button>
+                    <p class="section-label">KOD RABATOWY</p>
+                    <div class="promo-row" style="display: flex; gap: 5px;">
+                        <input type="text" id="discount-code" placeholder="KOD" style="flex: 1;">
+                        <button type="button" onclick="applyDiscount()" style="background: #000; color: #fff; border: none; padding: 0 15px; cursor: pointer;">AKTYWUJ</button>
                     </div>
                     <p id="discount-msg"></p>
                 </div>
 
                 <div class="shipping-select-box">
-                    <label class="section-label">Dostawa:</label>
+                    <label class="section-label">DOSTAWA:</label>
                     <select id="shipping-method" onchange="checkShippingMethod()" class="cart-input">
                         <option value="">Wybierz sposób dostawy...</option>
                         <option value="12">Paczkomat InPost — 12,00 zł</option>
@@ -172,92 +159,73 @@
                     </select>
                 </div>
                 
-                <div class="total-row">
+                <div class="total-row" style="display: flex; justify-content: space-between; font-weight: bold; margin: 20px 0; border-top: 1px solid #eee; pt: 10px;">
                     <span>DO ZAPŁATY:</span>
                     <span id="cart-total">0,00 zł</span>
                 </div>
 
-                <div class="payment-info">
-                    <p>Płatność przelewem lub BLIK</p>
-                    <small>Dane do wpłaty otrzymasz w podsumowaniu.</small>
+                <div class="payment-info" style="background: #f9f9f9; padding: 10px; text-align: center; margin-bottom: 15px;">
+                    <p style="margin: 0; font-size: 13px; font-weight: bold;">PŁATNOŚĆ PRZELEWEM LUB BLIK</p>
+                    <small style="font-size: 11px;">Dane do wpłaty otrzymasz w podsumowaniu.</small>
                 </div>
-                
-                <button type="submit" form="checkout-form" class="checkout-btn">Złóż zamówienie</button>
+
+                <div class="terms-container" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 15px;">
+                    <input type="checkbox" id="terms-accept" name="zgoda_regulamin" required>
+                    <label for="terms-accept" style="font-size: 11px; line-height: 1.2;">
+                        Akceptuję <a href="regulamin.html" target="_blank">Regulamin</a> oraz <a href="polityka-prywatnosci.html" target="_blank">Politykę Prywatności</a> *
+                    </label>
+                </div>
+
+                <button type="submit" form="checkout-form" class="checkout-btn" style="width: 100%; background: #1a1a1a; color: white; padding: 15px; border: none; font-weight: bold; cursor: pointer;">ZŁÓŻ ZAMÓWIENIE</button>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-        const galleryImages = ["bordowafalbanka1.jpg", "bordowafalbanka2.jpg", "bordowafalbanka3.jpg"];
-        function openFullImg(index) {
-    const modal = document.getElementById("imgModal");
-    const container = document.getElementById("imgContainer");
-    
-    if (modal && container) {
-        currentImgIndex = index;
-        container.src = galleryImages[index];
-        modal.style.display = "flex";
-    }
-}
-    </script>
-    <script src="cart.js"></script>
-
 <footer class="site-footer">
-        <div class="footer-scallop"></div>
+    <div class="footer-scallop"></div>
     <div class="footer-container">
         <div class="footer-brand">
             <h2 class="footer-logo">USTALMY GRAWER</h2>
-            <p><a href="mailto:kontakt@ustalmygrawer.pl">ustalmygrawer@gmail.com</a></p>
+            <p><a href="mailto:ustalmygrawer@gmail.com">ustalmygrawer@gmail.com</a></p>
         </div>
-<div class="pc-only-socials">
-        <div class="social-icons-wrapper">
-                   <!-- Facebook -->
-    <a href="http://www.facebook.com/profile.php?id=61572027870815" target="_blank" rel="noopener" aria-label="Facebook">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-        </svg>
-    </a>
-    <!-- Instagram -->
-    <a href="https://www.instagram.com/ustalmygrawer/" target="_blank" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-miterlimit="10">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-        </svg>
-    </a>
-    <!-- TikTok -->
-    <a href="https://www.tiktok.com/@ustalmygrawer" target="_blank" aria-label="TikTok">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
-        </svg>
-    </a>
+        <div class="pc-only-socials">
+            <div class="social-icons-wrapper">
+                <a href="http://www.facebook.com/profile.php?id=61572027870815" target="_blank" rel="noopener" aria-label="Facebook">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+                <a href="https://www.instagram.com/ustalmygrawer/" target="_blank" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-miterlimit="10"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+                <a href="https://www.tiktok.com/@ustalmygrawer" target="_blank" aria-label="TikTok">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+                </a>
             </div>
         </div>
-         <div class="footer-column">
-    <h3>O NAS</h3>
-    <ul>
-        <li><a href="kontakt.html">Kontakt</a></li>
-        <li><a href="o-nas.html">O nas</a></li>
-        <li><a href="regulamin.html">Regulamin</a></li>
-        <li><a href="polityka-prywatnosci.html">Polityka prywatności</a></li>
-    </ul>
-</div>
-
-<div class="footer-column">
-    <h3>OBSŁUGA KLIENTA</h3>
-    <ul>
-        <li><a href="dostawa.html">Metody i koszt dostawy</a></li>
-        <li><a href="zwroty.html">Zwroty i reklamacje</a></li>
-    </ul>
-</div>
+        <div class="footer-column">
+            <h3>O NAS</h3>
+            <ul>
+                <li><a href="kontakt.html">Kontakt</a></li>
+                <li><a href="o-nas.html">O nas</a></li>
+                <li><a href="regulamin.html">Regulamin</a></li>
+                <li><a href="polityka-prywatnosci.html">Polityka prywatności</a></li>
+            </ul>
+        </div>
+        <div class="footer-column">
+            <h3>OBSŁUGA KLIENTA</h3>
+            <ul>
+                <li><a href="dostawa.html">Metody i koszt dostawy</a></li>
+                <li><a href="zwroty.html">Zwroty i reklamacje</a></li>
+            </ul>
+        </div>
     </div>
-
     <div class="footer-bottom">
         <p>&copy; <span id="current-year"></span> Ustalmy Grawer. Wszelkie prawa zastrzeżone.</p>
-        <p class="author">Realizacja własna.</p>
     </div>
 </footer>
+
+<script src="cart.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
   AOS.init({
     duration: 1000,    // Czas trwania animacji (1 sekunda)

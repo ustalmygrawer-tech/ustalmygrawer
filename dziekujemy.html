@@ -37,20 +37,26 @@
         }
         a.btn-home {
             display: inline-block;
-            background: #1a1a1a;
-            color: #ffffff !important; /* Wymuszona czysta biel */
-            padding: 18px 35px;
+            padding: 15px 35px;
+        /* Jasny beż nawiązujący do Twoich fal */
+            background: #f8f5f0; 
+        /* Ciemniejszy odcień beżu lub bardzo ciemna szarość dla tekstu */
+            color: #1a1a1a;
+        /* Cienkie obramowanie */
+            border: 1px solid #d1c7bc; 
             text-decoration: none;
+            font-size: 0.75rem;
+            font-family: 'Montserrat', sans-serif;
             text-transform: uppercase;
-            font-weight: bold;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            border: none;
+            letter-spacing: 2.5px;
+            transition: all 0.3s ease;
             cursor: pointer;
-            transition: opacity 0.3s;
         }
         .btn-home:hover {
-            opacity: 0.9;
+            /* Przy najechaniu tło może stać się całkiem białe, a ramka ciemniejsza */
+            background: #ffffff;
+            border-color: #1a1a1a;
+            letter-spacing: 3px; /* Subtelny efekt rozszerzenia tekstu */
         }
     </style>
 </head>
@@ -58,7 +64,7 @@
 
     <div class="thank-you-container">
         <h1>Dziękujemy za zamówienie!</h1>
-        <p>Twoje zgłoszenie zostało pomyślnie wysłane. Zaraz weźmiemy się do pracy!</p>
+        <p>Twoje zgłoszenie zostało pomyślnie wysłane. Ostatni krok to dokonanie płatności.</p>
         
         <div class="payment-details">
             <p style="font-weight: bold; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1px; color: #666; margin-bottom: 15px;">Dane do płatności:</p>
@@ -67,11 +73,13 @@
                Nr konta: <span style="letter-spacing: 1px;">55 1160 2202 0000 0003 8220 0669</span><br>
                Odbiorca: USTALMY Anna Kozłowska</p>
             <p style="margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee;">
-               <strong>Tytuł przelewu:</strong> Zamówienie - [Twoje Imię i Nazwisko]
+               <strong>Tytuł przelewu:</strong> 
+        <span id="transfer-title">Zamówienie - [Twoje Imię i Nazwisko]</span>
             </p>
         </div>
 
         <p style="font-size: 0.85rem; color: #666; margin-bottom: 35px; line-height: 1.5;">
+            Na wpłatę czekamy 3 dni robocze. Po tym czasie zamówienie zostanie anulowane.
             Realizację ramki rozpoczniemy po zaksięgowaniu wpłaty. 
             Potwierdzenie otrzymasz również drogą mailową.
         </p>
@@ -82,6 +90,17 @@
     // Po wejściu na stronę podziękowania, usuwamy dane z pamięci przeglądarki
     localStorage.removeItem('cart');
     // Jeśli używasz innej nazwy w cart.js, upewnij się że tu jest taka sama
+    window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderID = urlParams.get('order');
+    const clientName = urlParams.get('name'); // Pobieramy imię z adresu
+    const titleElement = document.getElementById('transfer-title');
+    
+    if (orderID) {
+        const nameText = clientName ? decodeURIComponent(clientName) : "[Twoje Imię i Nazwisko]";
+        titleElement.innerHTML = `Zamówienie nr <strong>${orderID}</strong> - ${nameText}`;
+    }
+});
 </script>
 </body>
 </html>

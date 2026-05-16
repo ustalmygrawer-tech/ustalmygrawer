@@ -2,11 +2,20 @@
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let currentDiscount = 0;
 
+// Funkcja zbiorcza - wywołuj ją zawsze po zmianie zawartości koszyka
+function updateCart() {
+    localStorage.setItem('cart', JSON.stringify(cart)); // Zapisuje zmiany
+    renderCartItems();      // Odświeża listę produktów
+    calculateTotals();      // Liczy sumę końcową
+    checkShippingMethod();  // Sprawdza blokady przycisku i pola
+    updateCartBadge();      // <--- TEJ LINII BRAKOWAŁO NA DOLE PLIKU!
+}
+
 // 2. DODAWANIE DO KOSZYKA
 function addToCart(name, price, img) {
     const existing = cart.find(item => item.name === name);
     if (existing) {
-        existing.qty += 1;
+        existing.qty += 1; // Upewnij się, że tu jest .qty a nie .quantity
     } else {
         cart.push({ name: name, price: price, img: img, qty: 1 });
     }
@@ -14,32 +23,21 @@ function addToCart(name, price, img) {
     alert("Dodano " + name + " do koszyka!");
 }
 
-// 3. AKTUALIZACJA DANYCH I LICZNIKÓW (PC + MOBILE)
-function updateCart() {
-    localStorage.setItem('cart', JSON.stringify(cart));
+// 3. LICZNIK PRZY IKONIE KOSZYKA
+function updateCartBadge() {
+    const badge = document.getElementById('cart-count');
+    if (!badge) return;
+    const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
     
-    // Szukamy wszystkich liczników (id dla PC i klasa dla Mobile)
-    const counts = document.querySelectorAll('#cart-count, .cart-badge');
-    const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-
-    counts.forEach(el => {
-        if (totalItems > 0) {
-            el.innerText = totalItems;
-            el.style.display = 'flex';
-        } else {
-            el.style.display = 'none';
-        }
-    });
-    
-    renderCartItems();
-    calculateTotals();
-    // Sprawdzamy metodę dostawy, aby przycisk zamówienia wiedział czy się odblokować
-    if (document.getElementById('shipping-method')) {
-        checkShippingMethod();
+    if (totalQty > 0) {
+        badge.innerText = totalQty;
+        badge.style.display = 'flex';
+    } else {
+        badge.style.display = 'none';
     }
 }
 
-// 4. RENDEROWANIE PRODUKTÓW (Z WPISYWANIEM RĘCZNYM)
+// 4. RENDEROWANIE PRODUKTÓW
 function renderCartItems() {
     const list = document.getElementById('cart-items-list');
     if(!list) return;
@@ -60,13 +58,7 @@ function renderCartItems() {
                     <p style="margin:0; font-weight:bold; font-size:0.85rem; text-transform:uppercase;">${item.name}</p>
                     <div style="display: flex; align-items: center; margin-top: 8px; gap: 10px;">
                         <button onclick="changeQty(${index}, -1)" style="width: 25px; height: 25px; border: 1px solid #ddd; background: white; cursor: pointer;">-</button>
-                        
-                        <input type="number" 
-                               value="${item.qty}" 
-                               min="1" 
-                               onchange="manualQty(${index}, this.value)"
-                               style="width: 45px; text-align: center; border: 1px solid #ddd; font-weight: bold; padding: 2px;">
-                        
+                        <input type="number" value="${item.qty}" min="1" onchange="manualQty(${index}, this.value)" style="width: 45px; text-align: center; border: 1px solid #ddd; font-weight: bold; padding: 2px;">
                         <button onclick="changeQty(${index}, 1)" style="width: 25px; height: 25px; border: 1px solid #ddd; background: white; cursor: pointer;">+</button>
                         <span style="margin-left: 10px; font-size: 0.85rem; color: #666;">x ${item.price.toFixed(2)} zł</span>
                     </div>
@@ -113,10 +105,9 @@ function clearCart() {
 function calculateTotals() {
     const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
     const shippingSelect = document.getElementById('shipping-method');
-    const shippingCost = shippingSelect ? parseFloat(shippingSelect.value) || 0 : 0;
+    const shippingCost = (shippingSelect && shippingSelect.value !== "") ? parseFloat(shippingSelect.value) : 0;
     
-    const discountAmount = subtotal * currentDiscount;
-    const finalTotal = (subtotal - discountAmount) + shippingCost;
+    const finalTotal = subtotal + shippingCost;
     
     const totalDisplay = document.getElementById('cart-total');
     if(totalDisplay) totalDisplay.innerText = finalTotal.toFixed(2) + " zł";
@@ -124,12 +115,12 @@ function calculateTotals() {
     const formProducts = document.getElementById('form-products');
     if(formProducts) {
         formProducts.value = cart.map(i => i.name + " (x" + i.qty + ")").join(', ');
-        document.getElementById('form-total').value = finalTotal.toFixed(2) + " zł";
-        document.getElementById('form-discount').value = (currentDiscount * 100) + "%";
+        const formTotalEl = document.getElementById('form-total');
+        if(formTotalEl) formTotalEl.value = finalTotal.toFixed(2) + " zł";
     }
 }
 
-// 7. OBSŁUGA DOSTAWY (Z ZABEZPIECZENIEM PUSTEGO KOSZYKA)
+// 7. OBSŁUGA DOSTAWY
 function checkShippingMethod() {
     const select = document.getElementById('shipping-method');
     const orderBtn = document.querySelector('.checkout-btn');
@@ -139,75 +130,61 @@ function checkShippingMethod() {
     if (!select || !orderBtn) return;
 
     const method = select.value;
-    const isCartEmpty = cart.length === 0; // Sprawdzamy, czy tablica cart jest pusta
+    const isCartEmpty = cart.length === 0;
 
-    // 1. Warunek blokady: jeśli nie wybrano metody LUB koszyk jest pusty
+    // Pobieramy wszystkie pola input z obu sekcji, aby nimi zarządzać
+    const paczkomatInputs = paczkomatBox ? paczkomatBox.querySelectorAll('input') : [];
+    const addressInputs = addressBox ? addressBox.querySelectorAll('input') : [];
+
     if (method === "" || isCartEmpty) {
         orderBtn.disabled = true;
         orderBtn.style.opacity = "0.5";
         orderBtn.style.cursor = "not-allowed";
-        
-        // Jeśli koszyk jest pusty, możemy dodać podpowiedź (dymek)
-        if (isCartEmpty) {
-            orderBtn.title = "Dodaj produkty do koszyka, aby złożyć zamówienie";
-        }
-
         if (paczkomatBox) paczkomatBox.style.display = 'none';
         if (addressBox) addressBox.style.display = 'none';
-        return; 
     } else {
-        // Jeśli wybrano metodę i są produkty – aktywujemy
         orderBtn.disabled = false;
         orderBtn.style.opacity = "1";
         orderBtn.style.cursor = "pointer";
-        orderBtn.title = "";
-    }
 
-    // 2. Wybór sekcji formularza
-    if (method === "12") { // PACZKOMAT
-        if (paczkomatBox) paczkomatBox.style.display = 'block';
-        if (addressBox) addressBox.style.display = 'none';
-        setRequiredFields(false);
-    } 
-    else if (method === "20") { // KURIER
-        if (paczkomatBox) paczkomatBox.style.display = 'none';
-        if (addressBox) addressBox.style.display = 'block';
-        setRequiredFields(true);
+        if (method === "12") { // PACZKOMAT
+            if (paczkomatBox) paczkomatBox.style.display = 'block';
+            if (addressBox) addressBox.style.display = 'none';
+            
+            // Aktywujemy required tylko dla paczkomatu
+            paczkomatInputs.forEach(input => input.required = true);
+            addressInputs.forEach(input => input.required = false);
+
+        } else if (method === "20") { // KURIER
+            if (paczkomatBox) paczkomatBox.style.display = 'none';
+            if (addressBox) addressBox.style.display = 'block';
+            
+            // Aktywujemy required tylko dla kuriera (oprócz numeru mieszkania)
+            paczkomatInputs.forEach(input => input.required = false);
+            addressInputs.forEach(input => {
+                if (input.name !== 'apt_no') input.required = true;
+            });
+        }
     }
-    
     calculateTotals(); 
 }
 
-function setRequiredFields(isKurier) {
-    const fields = ['street', 'house_no', 'zip', 'city', 'customer-phone'];
-    const pFields = ['paczkomat-search', 'paczkomat-phone'];
-
-    fields.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.required = isKurier;
-    });
-
-    pFields.forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.required = !isKurier;
-    });
-}
-
-// 8. OTWIERANIE/ZAMYKANIE KOSZYKA
+// 8. OTWIERANIE/ZAMYKANIE
 function toggleCart() {
-    const cartPopup = document.getElementById('cart-popup');
-    const body = document.body;
-
-    if (cartPopup.style.display === 'none' || cartPopup.style.display === '') {
-        cartPopup.style.display = 'flex';
-        body.style.overflow = 'hidden'; // Blokujemy przewijanie tła
+    const modal = document.getElementById("cart-popup");
+    if (modal.style.display === "none" || modal.style.display === "") {
+        modal.style.display = "flex";
+        document.body.style.overflow = "hidden"; // Blokada przewijania tła
     } else {
-        cartPopup.style.display = 'none';
-        body.style.overflow = 'visible'; // Zmieniamy z auto/hidden na visible
-        body.style.overflowX = 'hidden'; // Upewniamy się, że poziom zostaje zablokowany
+        modal.style.display = "none";
+        document.body.style.overflow = ""; // Przywrócenie domyślnego zachowania
+        document.body.style.width = "100%"; // Wymuszenie poprawnej szerokości
     }
 }
-// POWIĘKSZANIE ZDJĘĆ
+
+
+
+
 
 // --- OBSŁUGA STRZAŁEK W SLIDERZE MOBILNYM ---
 // 1. ZMIENNA TRZYMAJĄCA AKTUALNY NUMER ZDJĘCIA
@@ -265,81 +242,28 @@ if (sliderGrid) {
         }
     }, { passive: true });
 }
-// Odświeżanie roku w stopce © 2026 Ustalmy Grawer. Wszelkie prawa zastrzeżone
-// Ten kod czeka, aż cała struktura strony (HTML) będzie gotowa
-document.addEventListener("DOMContentLoaded", function() {
-    const yearElement = document.getElementById("current-year");
+
+// 9. START SKRYPTU
+document.addEventListener('DOMContentLoaded', function() {
+    updateCart(); // To wywoła renderowanie, liczenie i badge za jednym razem
     
-    // Sprawdzamy, czy element na pewno istnieje, żeby nie było błędu
+    // Obsługa Menu mobilnego
+    const menuToggle = document.querySelector('.menu-toggle');
+    const navLinks = document.querySelector('.nav-links');
+    if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+    }
+
+    // Inicjalizacja roku w stopce
+    const yearElement = document.getElementById("current-year");
     if (yearElement) {
         yearElement.textContent = new Date().getFullYear();
     }
 });
 
-// 9. START SKRYPTU
-document.addEventListener('DOMContentLoaded', function() {
-    updateCart(); 
-
-    // Menu mobilne
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-            menuToggle.classList.toggle('active');
-        menuToggle.style.zIndex = "10002"; 
-    });
-
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-                menuToggle.classList.remove('active');
-            });
-        });
-    }
-});
-document.addEventListener('DOMContentLoaded', function() {
-    // Wybieramy wszystkie linki, które zaczynają się od #
-    const scrollLinks = document.querySelectorAll('a[href^="#"]');
-
-    scrollLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
-            const targetId = this.getAttribute('href');
-            
-            // Ignorujemy same '#' (często używane w menu)
-            if (targetId === "#") return;
-
-            const targetElement = document.querySelector(targetId);
-            
-            if (targetElement) {
-                e.preventDefault(); // Zatrzymujemy szybki skok
-                
-                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
-                const startPosition = window.pageYOffset;
-                const distance = targetPosition - startPosition;
-                const duration = 1800; // Czas zjazdu (1.8 sekundy)
-                let start = null;
-
-                window.requestAnimationFrame(step);
-
-                function step(timestamp) {
-                    if (!start) start = timestamp;
-                    const progress = timestamp - start;
-                    window.scrollTo(0, easeInOutCubic(progress, startPosition, distance, duration));
-                    if (progress < duration) window.requestAnimationFrame(step);
-                }
-
-                function easeInOutCubic(t, b, c, d) {
-                    t /= d/2;
-                    if (t < 1) return c/2*t*t*t + b;
-                    t -= 2;
-                    return c/2*(t*t*t + 2) + b;
-                }
-            }
-        });
-    });
-});
 function fixMobileNav() {
     if (window.innerWidth <= 768) {
         const nav = document.querySelector('.navbar');
@@ -361,45 +285,82 @@ document.querySelectorAll('.footer-column h3').forEach(header => {
         }
     });
 });
-document.addEventListener('DOMContentLoaded', function() {
-    const footerHeaders = document.querySelectorAll('.footer-column h3');
-    
-    footerHeaders.forEach(header => {
-        header.addEventListener('click', function() {
-            // Sprawdzamy czy jesteśmy na mobile (szerokość ekranu)
-            if (window.innerWidth <= 768) {
-                const parent = this.parentElement;
-                
-                // Opcjonalnie: zamyka inne sekcje gdy otwierasz nową (efekt akordeonu)
-                document.querySelectorAll('.footer-column').forEach(col => {
-                    if (col !== parent) col.classList.remove('active');
-                });
 
-                // Przełącza klasę active na klikniętym elemencie
-                parent.classList.toggle('active');
-            }
-        });
-    });
-});
-function openInPostModal() {
-    console.log("Próba otwarcia mapy...");
-    
-    if (typeof easyPack === 'undefined') {
-        console.error("Biblioteka easyPack nadal nie jest wczytana!");
-        alert("Twoja przeglądarka lub AdBlock blokuje skrypt InPostu. Wyłącz blokowanie reklam i odśwież stronę.");
+// Link do Twojego skryptu Google (WKLEJ TU SWÓJ ADRES)
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyDFCFewwwFV1-eaMse4wIK8duVdVqGGeeVpfpLVLbWu0NxD4sGeposvsFBGshqJGb2/exec';      
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    const termsAccepted = document.getElementById('terms-accept').checked;
+
+    if (!termsAccepted) {
+        e.preventDefault(); // Zatrzymujemy wysyłkę
+        alert("Prosimy o zaakceptowanie regulaminu i polityki prywatności.");
         return;
     }
+    
+    e.preventDefault(); // Zatrzymujemy wysyłkę do Formspree
 
-    easyPack.init({
-        defaultWidgetType: 'dot',
-        googleMapsApiKey: false
-    });
+    // Pobieramy przycisk, aby go zablokować (zapobiega podwójnemu kliknięciu)
+    const submitBtn = document.querySelector('.checkout-btn');
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Wysyłanie...";
+    }
 
-    easyPack.modalMap(function (point, modal) {
-        document.getElementById('paczkomat-search').value = point.name;
-        modal.close();
-    }, {
-        width: 500,
-        height: 600
+    // 2. GENEROWANIE NUMERU ZAMÓWIENIA
+    const d = new Date();
+    const dateStr = d.getFullYear() + (d.getMonth() + 1).toString().padStart(2, '0') + d.getDate().toString().padStart(2, '0');
+    const randomStr = Math.floor(1000 + Math.random() * 9000);
+    const orderID = `UG-${dateStr}-${randomStr}`;
+
+    // 3. ZBIERANIE DANYCH Z FORMULARZA
+    const formData = new FormData(this);
+    const formEntries = Object.fromEntries(formData.entries());
+    
+    // Sprawdzamy metodę dostawy
+    const shippingMethodVal = document.getElementById('shipping-method').value;
+    const isPaczkomat = (shippingMethodVal === "12");
+
+    // Przygotowanie obiektu z danymi do Arkusza Google
+    const dataToSheet = {
+        Numer_Zamowienia: orderID,
+        name: formEntries.name,
+        email: formEntries.email,
+        Produkty: document.getElementById('form-products').value || "Brak danych o produktach",
+        Suma_Calkowita: document.getElementById('cart-total').innerText,
+        Metoda_Dostawy: isPaczkomat ? "Paczkomat InPost" : "Kurier InPost",
+        
+        // Pola zależne od wyboru dostawy
+        Nr_Paczkomatu: isPaczkomat ? (document.getElementById('paczkomat-search').value || "Nie podano") : "---",
+        street_full: isPaczkomat ? "---" : `${formEntries.street || ''} ${formEntries.house_no || ''}${formEntries.apt_no ? '/' + formEntries.apt_no : ''}`,
+        zip: isPaczkomat ? "---" : (formEntries.zip || ''),
+        city: isPaczkomat ? "---" : (formEntries.city || ''),
+        
+        // Telefon (wybieramy ten, który został wypełniony)
+        Telefon: isPaczkomat ? (document.getElementById('paczkomat-phone').value || formEntries.phone) : (formEntries.phone || document.getElementById('paczkomat-phone').value)
+    };
+
+    // 4. WYSYŁKA DO GOOGLE SHEETS
+    fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Wymagane przez Google Apps Script
+        cache: 'no-cache',
+        body: JSON.stringify(dataToSheet)
+    })
+    .then(() => {
+        // Czyścimy koszyk z pamięci przeglądarki
+        localStorage.removeItem('cart');
+        
+        // 5. PRZEKIEROWANIE NA STRONĘ PODZIĘKOWANIA
+        // Przekazujemy numer i imię w linku, aby strona podziękowania mogła je wyświetlić
+        const nextUrl = `dziekujemy.html?order=${orderID}&name=${encodeURIComponent(formEntries.name)}`;
+        window.location.href = nextUrl;
+    })
+    .catch(error => {
+        console.error('Błąd wysyłki:', error);
+        alert("Wystąpił problem z wysłaniem zamówienia. Prosimy o kontakt mailowy.");
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Złóż zamówienie";
+        }
     });
-}
+});

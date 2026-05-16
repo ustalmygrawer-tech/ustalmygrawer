@@ -4,20 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zwroty i Reklamacje - Ustalmy Grawer</title>
-    <link rel="stylesheet" href="https://sdk.inpost.pl/geowidget/v4/geowidget.css">
-<script src="https://sdk.inpost.pl/geowidget/v4/geowidget.js" defer></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-    <script>
-    // Inicjalizacja zaraz po załadowaniu biblioteki
-    window.easyPackAsyncInit = function () {
-        easyPack.init({
-            defaultWidgetType: 'dot',
-            googleMapsApiKey: false
-        });
-        console.log("InPost zainicjowany w HTML");
-    };
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+
     <style>
     body { background-color: #ffffff; }
 
@@ -205,19 +195,45 @@
 </div>
 <script src="cart.js"></script>
     </header>
-    <div id="cart-popup" class="popup-overlay">
+    <div class="cart-container" onclick="toggleCart()">
+            <span class="cart-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="8" width="18" height="13" rx="2" ry="2"></rect>
+                    <path d="M16 10a4 4 0 0 0-8 0"></path>
+                </svg>
+                <span id="cart-count" class="cart-badge" style="display: none;">0</span>
+            </span>
+        </div>
+    </li>
+</ul>
+</nav>
+<main class="content-wrapper">
+    <section class="coming-soon-section">
+    <div class="coming-soon-content">
+        <span class="coming-soon-badge">Nowość wkrótce</span>
+        <h1>Ramki na zdjęcia USG</h1>
+        <p class="coming-soon-text">
+            Pracujemy nad nową kolekcją ramek, które idealnie podkreślą Twoje pierwsze ciążowe wspomnienia. 
+            Premiera już niedługo!
+        </p>
+        <div class="coming-soon-divider"></div>
+        <a href="mini.html" class="back-to-shop-btn">ZOBACZ DOSTĘPNE RAMKI MINI</a>
+    </div>
+</section>
+   
+    <div id="cart-popup" class="popup-overlay" style="display: none;">
     <div class="popup-content">
         <span class="close-popup" onclick="toggleCart()">&times;</span>
         
-        <h2 class="popup-title">Twój Koszyk</h2>
+        <h2 class="popup-title">TWÓJ KOSZYK</h2>
         
         <div class="cart-grid">
             <div class="cart-main">
                 <div id="cart-items-list"></div>
 
-                <p class="section-label">Dane do wysyłki:</p>
+                <p class="section-label">DANE DO WYSYŁKI:</p>
                 
-                <form action="https://formspree.io/f/mwvynybl" method="POST" id="checkout-form">
+                <form id="checkout-form">
                     <input type="hidden" name="_next" value="https://ustalmygrawer.github.io/ustalmygrawer/dziekujemy.html">                
                     <input type="hidden" name="Produkty" id="form-products">
                     <input type="hidden" name="Suma_Calkowita" id="form-total">
@@ -227,42 +243,55 @@
                     <input type="email" name="email" placeholder="E-mail" required class="cart-input">
                     
                     <div id="paczkomat-box" class="sub-box">
-                        <label>Numer Paczkomatu:</label>
-                        <input type="text" id="paczkomat-search" name="Nr_Paczkomatu" placeholder="Np. KRA01M" class="cart-input">
-                        <button type="button" onclick="openInPostModal()" class="inpost-map-btn">Wybierz paczkomat z mapy</button>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px;">
+        <label>NUMER PACZKOMATU: *</label>
+        
+        <div class="tooltip-container">
+            <span class="info-icon">?</span>
+            <div class="tooltip-content">
+                <p>Znajdź paczkomat na mapie i wpisz jego kod (np. <b>KRA01M</b>) w pole poniżej.</p>
+                <img src="instrukcja-paczkomat.jpg" alt="Jak znaleźć kod" style="width:100%; border-radius:4px; margin-top:5px;">
+            </div>
+        </div>
+    </div>
 
-                        <label>Numer telefonu:</label>
-                        <input type="tel" id="paczkomat-phone" name="Telefon_Paczkomat" placeholder="Dla powiadomień InPost" class="cart-input">
-                    </div>
+    <input type="text" id="paczkomat-search" name="Nr_Paczkomatu" placeholder="Wklej kod paczkomatu Np. KRA01M" class="cart-input" required>
+    
+    <a href="https://inpost.pl/znajdz-paczkomat" target="_blank" class="inpost-map-btn" style="display: block; text-align: center; line-height: 1.0; padding: 10px 5px;">
+    WYSZUKAJ KOD PACZKOMATU
+</a>
+
+    <label style="display:block; margin-top:10px; font-size:12px;">NUMER TELEFONU:</label>
+    <input type="tel" id="paczkomat-phone" name="Telefon_Paczkomat" placeholder="Dla powiadomień InPost" class="cart-input">
+</div>
 
                     <div id="address-box" class="sub-box" style="display: none;"> 
-                        <p class="section-label">Dane do wysyłki kurierem:</p>
-                        <input type="text" name="street" id="street" placeholder="Ulica" class="cart-input">
-                        <div class="input-row">
-                            <input type="text" name="house_no" id="house_no" placeholder="Nr domu" class="cart-input">
-                            <input type="text" name="apt_no" id="apt_no" placeholder="Nr mieszkania" class="cart-input">
+                        <input type="text" name="street" placeholder="Ulica" class="cart-input">
+                        <div class="input-row" style="display: flex; gap: 10px;">
+                            <input type="text" name="house_no" placeholder="Nr domu" class="cart-input">
+                            <input type="text" name="apt_no" placeholder="Nr mieszkania" class="cart-input">
                         </div>
-                        <div class="input-row">
-                            <input type="text" name="zip" id="zip" placeholder="Kod pocztowy" class="cart-input">
-                            <input type="text" name="city" id="city" placeholder="Miejscowość" class="cart-input">
+                        <div class="input-row" style="display: flex; gap: 10px;">
+                            <input type="text" name="zip" placeholder="Kod pocztowy" class="cart-input">
+                            <input type="text" name="city" placeholder="Miejscowość" class="cart-input">
                         </div>
-                        <input type="tel" name="phone" id="customer-phone" placeholder="Telefon dla kuriera" class="cart-input">
+                        <input type="tel" name="phone" placeholder="Telefon dla kuriera" class="cart-input">
                     </div>
                 </form>
             </div>
 
             <div class="cart-summary">
                 <div class="promo-box">
-                    <p class="section-label">Kod rabatowy</p>
-                    <div class="promo-row">
-                        <input type="text" id="discount-code" placeholder="KOD">
-                        <button type="button" onclick="applyDiscount()">Aktywuj</button>
+                    <p class="section-label">KOD RABATOWY</p>
+                    <div class="promo-row" style="display: flex; gap: 5px;">
+                        <input type="text" id="discount-code" placeholder="KOD" style="flex: 1;">
+                        <button type="button" onclick="applyDiscount()" style="background: #000; color: #fff; border: none; padding: 0 15px; cursor: pointer;">AKTYWUJ</button>
                     </div>
                     <p id="discount-msg"></p>
                 </div>
 
                 <div class="shipping-select-box">
-                    <label class="section-label">Dostawa:</label>
+                    <label class="section-label">DOSTAWA:</label>
                     <select id="shipping-method" onchange="checkShippingMethod()" class="cart-input">
                         <option value="">Wybierz sposób dostawy...</option>
                         <option value="12">Paczkomat InPost — 12,00 zł</option>
@@ -270,35 +299,40 @@
                     </select>
                 </div>
                 
-                <div class="total-row">
+                <div class="total-row" style="display: flex; justify-content: space-between; font-weight: bold; margin: 20px 0; border-top: 1px solid #eee; pt: 10px;">
                     <span>DO ZAPŁATY:</span>
                     <span id="cart-total">0,00 zł</span>
                 </div>
 
-                <div class="payment-info">
-                    <p>Płatność przelewem lub BLIK</p>
-                    <small>Dane do wpłaty otrzymasz w podsumowaniu.</small>
+                <div class="payment-info" style="background: #f9f9f9; padding: 10px; text-align: center; margin-bottom: 15px;">
+                    <p style="margin: 0; font-size: 13px; font-weight: bold;">PŁATNOŚĆ PRZELEWEM LUB BLIK</p>
+                    <small style="font-size: 11px;">Dane do wpłaty otrzymasz w podsumowaniu.</small>
                 </div>
-                
-                <button type="submit" form="checkout-form" class="checkout-btn">Złóż zamówienie</button>
+
+                <div class="terms-container" style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 15px;">
+                    <input type="checkbox" id="terms-accept" name="zgoda_regulamin" required>
+                    <label for="terms-accept" style="font-size: 11px; line-height: 1.2;">
+                        Akceptuję <a href="regulamin.html" target="_blank">Regulamin</a> oraz <a href="polityka-prywatnosci.html" target="_blank">Politykę Prywatności</a> *
+                    </label>
+                </div>
+
+                <button type="submit" form="checkout-form" class="checkout-btn" style="width: 100%; background: #1a1a1a; color: white; padding: 15px; border: none; font-weight: bold; cursor: pointer;">ZŁÓŻ ZAMÓWIENIE</button>
             </div>
         </div>
     </div>
 </div>
 
-<script>
-        const galleryImages = ["bordowafalbanka1.jpg", "bordowafalbanka2.jpg", "bordowafalbanka3.jpg"];
-        function openFullImg(index) {
-    const modal = document.getElementById("imgModal");
-    const container = document.getElementById("imgContainer");
-    
-    if (modal && container) {
-        currentImgIndex = index;
-        container.src = galleryImages[index];
-        modal.style.display = "flex";
-    }
-}
-    </script>
+
     <script src="cart.js"></script>
+ <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 1000,    // Czas trwania animacji (1 sekunda)
+    once: false,       // Zmień na false, jeśli chcesz, by animacja powtarzała się przy każdym przewinięciu (lub zostaw true, by raz "wjechała")
+    offset: 200,       // Animacja odpali się dopiero, gdy element będzie 200px w polu widzenia (kluczowe!)
+    delay: 100,        // Małe opóźnienie, żeby wyglądało naturalniej
+    easing: 'ease-in-out',
+  });
+</script>
 </body>
 </html>
